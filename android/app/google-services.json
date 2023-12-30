@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "17685987514",
+    "project_id": "gonggam-92274",
+    "storage_bucket": "gonggam-92274.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:17685987514:android:3c57ef889c367628b70283",
+        "android_client_info": {
+          "package_name": "com.a2zstudio.gonggam"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzAd23-ZZRJa77ox75FYOWhtCht06lGSk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      },
+      "admob_app_id": "ca-app-pub-9332149282803752~6847075416"
+    }
+  ],
+  "configuration_version": "1"
+}
