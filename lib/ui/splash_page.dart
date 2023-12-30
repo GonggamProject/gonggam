@@ -36,7 +36,7 @@ class _SplashWidgetState extends State<SplashWidget> {
 
   @override
   void initState() {
-    // loadAd();
+    loadAd();
     _incomingLinkHandler();
     _initURIHandler();
 

@@ -25,10 +25,10 @@ class AppleAuthService implements AuthInterface {
     );
 
     AuthRequest user = AuthRequest(
-        credential.toString(),
+        credential.authorizationCode,
         "APPLE",
         "",
-        Utils.getProfileImageUrl(credential.hashCode)
+        Utils.getProfileImageUrl(credential.authorizationCode.hashCode)
     );
     loginSuccess(user);
   }
