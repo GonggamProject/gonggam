@@ -194,7 +194,7 @@ class _SettingPageWidgetState extends State<SettingPageWidget> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text("공감책방", style: TextStyle(fontFamily: FONT_NANUMMYNGJO, fontSize: 12, color: COLOR_BOOK3),),
-                    Text("Version 1.0.0", style: TextStyle(fontFamily: FONT_SFPRO, fontSize: 12, color: COLOR_BOOK3),)
+                    Text("Version 1.0.1", style: TextStyle(fontFamily: FONT_SFPRO, fontSize: 12, color: COLOR_BOOK3),)
                   ],
                 ),
               ],
