@@ -103,7 +103,7 @@ class _InvitedResultPageState extends State<InvitedResultPage> {
       const Text("설정 > 책방관리에서 책방을 삭제하거나", style: TextStyle(fontFamily: FONT_APPLESD,
         fontSize: 15,
         color: COLOR_BOOK5,)),
-      const Text("책방 떠가기를 진행해주세요.", style: TextStyle(fontFamily: FONT_APPLESD,
+      const Text("책방 나가기를 진행해주세요.", style: TextStyle(fontFamily: FONT_APPLESD,
         fontSize: 15,
         color: COLOR_BOOK5,)),
     ];

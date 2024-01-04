@@ -34,15 +34,17 @@ class NoteData extends LinkedListEntry<NoteData> {
 
   String getNoteText() => controller.text;
   int getNoteTextLength() => controller.text.length;
-  late int noteId;
+  late int? noteId = null;
   late double textFieldHight = 99.0;
 }
 
 class _CreateNoteWidgetState extends State<CreateNoteWidget> {
   final GroupController groupController = Get.find<GroupController>();
+  final int currentDateState = Get.arguments ?? 0;
   late int groupId = groupController.group.id;
   late bool isEditMode = false;
   final noteDataList = LinkedList<NoteData>();
+
 
   @override
   void initState() {
@@ -52,7 +54,7 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
   }
 
   void getNoteData() async {
-    gonggam_response.Response<Notes> noteRes = await NoteService.getNoteList(null, groupId, Utils.formatDate("yyyyMMdd", 0));
+    gonggam_response.Response<Notes> noteRes = await NoteService.getNoteList(null, groupId, Utils.formatDate("yyyyMMdd", currentDateState));
     List<Note> noteList = noteRes.content!.list;
     if (noteList.isEmpty) {
       noteDataList.add(NoteData());
@@ -171,7 +173,7 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
         height: 60,
         child: ElevatedButton(
           onPressed: () {
-            NoteService.postNoteList(groupController.group.id, DateFormat("yyyyMMdd").format(DateTime.now()), noteDataList, isEditMode).then((value) => {
+            NoteService.postNoteList(groupController.group.id, Utils.formatDate("yyyyMMdd", currentDateState), noteDataList, isEditMode).then((value) => {
               Navigator.push( context, MaterialPageRoute( builder: (context) => const BookStoreMainWidget()), ).then((value) => setState(() {}))
             });
           },
@@ -374,7 +376,6 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
   double _calculateNewHeight(String text) {
     int numberOfLines = '\n'.allMatches(text).length + 1;
     double newHeight = numberOfLines * 20.0; // Adjust the factor as needed
-    print(newHeight < 99 ? 99 : newHeight);
     return newHeight < 99 ? 99 : newHeight;
   }
 }

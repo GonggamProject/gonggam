@@ -9,7 +9,7 @@ import '../../ui/createNote/create_note_page.dart';
 
 class NoteService {
   static Future<void> postNoteList(int groupId, String targetedAt, LinkedList<NoteData> noteList, bool isEditMode) async {
-    Notes notes = Notes(groupId, targetedAt, noteList.map((e) => Note(isEditMode ? e.noteId : null, e.getNoteText())).toList());
+    Notes notes = Notes(groupId, targetedAt, noteList.map((e) => Note(e.noteId, e.getNoteText())).toList());
     await GongGamHttpClient().postRequest("/v1/notes", notes.toJson());
   }
 

@@ -10,6 +10,7 @@ import 'package:gonggam/controller/invite_controller.dart';
 import 'package:gonggam/ui/bookstore/invite/invited_page.dart';
 import 'package:gonggam/ui/common/alert.dart';
 import 'package:gonggam/ui/walkthrought_page.dart';
+import 'package:new_version_plus/new_version_plus.dart';
 import 'package:uni_links/uni_links.dart';
 
 import '../common/constants.dart';
@@ -17,7 +18,9 @@ import '../common/prefs.dart';
 import '../controller/group_controller.dart';
 import '../domain/group/group.dart';
 import '../domain/group/groups.dart';
+import '../main.dart';
 import '../service/group/group_service.dart';
+import '../utils.dart';
 import 'bookstore/bookstore_main.dart';
 import 'createBookstore/create_bookstore_main_page.dart';
 
@@ -31,7 +34,7 @@ class SplashWidget extends StatefulWidget {
 class _SplashWidgetState extends State<SplashWidget> {
   bool _initialURILinkHandled = false;
   StreamSubscription? _streamSubscription;
-
+  bool canUpdate = false;
   Uri? scheme;
 
   @override
@@ -44,7 +47,11 @@ class _SplashWidgetState extends State<SplashWidget> {
   }
 
   void navigateToNextScreen() async {
-    if(scheme != null) return;
+    final version = await Utils.appVersionCheck();
+    if(version!.canUpdate) {
+      Utils.showUpdateDialog(version);
+      return;
+    }
 
     if(Prefs.isLogined()) {
       Groups groups = await GroupService.getGroupList();
@@ -137,11 +144,11 @@ class _SplashWidgetState extends State<SplashWidget> {
   Future<void> _initURIHandler() async {
     if (!_initialURILinkHandled) {
       _initialURILinkHandled = true;
-      final initialURI = await getInitialUri();
+      final uri = await getInitialUri();
 
-      if (initialURI != null) {
-        scheme = initialURI;
-        schemeProcessor(initialURI);
+      if (uri != null) {
+        scheme = uri;
+        schemeProcessor(uri);
       }
     }
   }

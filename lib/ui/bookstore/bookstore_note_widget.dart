@@ -288,7 +288,7 @@ Future showSettingModal(BuildContext context, int currentDateState, int groupId)
                     child: ElevatedButton(
                       onPressed: () {
                         Navigator.pop(context);
-                        Get.to(const CreateNoteWidget());
+                        Get.to(const CreateNoteWidget(), arguments: currentDateState);
                       },
                       style: ElevatedButton.styleFrom(
                         side: const BorderSide(

@@ -26,4 +26,8 @@ class GroupController extends GetxController {
   void resetGroup() {
     group = groups.groups.first;
   }
+
+  void setRepresentationGroup() {
+    group = groups.groups.firstWhere((element) => element.isRepresentation).copyWith();
+  }
 }

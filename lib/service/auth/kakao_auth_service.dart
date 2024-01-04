@@ -7,13 +7,11 @@ import 'package:gonggam/domain/group/group.dart';
 import 'package:gonggam/service/customer/customer_service.dart';
 import 'package:gonggam/service/group/group_service.dart';
 import 'package:gonggam/ui/bookstore/bookstore_main.dart';
-import 'package:gonggam/ui/createBookstore/create_bookstore_name_page.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart' as Kakao;
 import '../../domain/auth/auth_request.dart' as gonggam_auth;
 import '../../domain/group/groups.dart';
 import '../../ui/createBookstore/create_bookstore_main_page.dart';
 import '../../ui/create_nickname_page.dart';
-import '../../main.dart';
 import '../../ui/splash_page.dart';
 import '../../utils.dart';
 import 'auth_interface.dart';
@@ -55,10 +53,17 @@ class KakaoAuthService implements AuthInterface {
       Get.off(const CreateNicknameWidget(), arguments: authRequest.nickname?.replaceAll(RegExp("[^0-9a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣]"), ""));
     } else {
       CustomerInfo info = await CustomerService().getCustomerInfo();
+      Groups groups = await GroupService.getGroupList();
+
       if(info.nickname.isEmpty) { // 닉네임이 없는 유저 로그인 -> 닉네임 입력
         Get.off(const CreateNicknameWidget(), arguments: authRequest.nickname?.replaceAll(RegExp("[^0-9a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣]"), ""));
       } else {
-        Get.off(const CreateBookStoreMainWidget());
+        if(!Get.isRegistered<GroupController>()) {
+          Group? group = groups.groups.firstWhereOrNull((element) => element.isRepresentation);
+          group ??= groups.groups.first;
+          Get.put(GroupController(groups, group!.copyWith()), permanent: true);
+        }
+        Get.off(groups.groups.isEmpty ? const CreateBookStoreMainWidget() : const BookStoreMainWidget());
       }
     }
   }
