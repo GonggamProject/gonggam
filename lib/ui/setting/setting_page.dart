@@ -8,6 +8,7 @@ import 'package:gonggam/ui/createBookstore/create_bookstore_name_page.dart';
 import 'package:gonggam/ui/setting/group_management_page.dart';
 import 'package:gonggam/ui/setting/secession_page.dart';
 import 'package:in_app_review/in_app_review.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../common/constants.dart';
 import 'package:get/get.dart';
@@ -23,7 +24,7 @@ class SettingPageWidget extends StatefulWidget {
 
 class _SettingPageWidgetState extends State<SettingPageWidget> {
   late GroupController? groupController;
-
+  String appVersion = "0.0.0";
   final InAppReview inAppReview = InAppReview.instance;
 
   @override
@@ -35,6 +36,15 @@ class _SettingPageWidgetState extends State<SettingPageWidget> {
     } else {
       groupController = null;
     }
+
+    getAppVersion();
+  }
+
+  void getAppVersion() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    setState(() {
+      appVersion = packageInfo.version;
+    });
   }
 
   @override
@@ -188,13 +198,13 @@ class _SettingPageWidgetState extends State<SettingPageWidget> {
                     }
                   }, child: const Text("탈퇴하기", style: TextStyle(fontFamily: FONT_APPLESD, fontSize: 15, color: COLOR_GRAY, decoration: TextDecoration.underline),)
                 ),),
-                const Column(
+                Column(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text("공감책방", style: TextStyle(fontFamily: FONT_NANUMMYNGJO, fontSize: 12, color: COLOR_BOOK3),),
-                    Text("Version 1.0.1", style: TextStyle(fontFamily: FONT_SFPRO, fontSize: 12, color: COLOR_BOOK3),)
+                    const Text("공감책방", style: TextStyle(fontFamily: FONT_NANUMMYNGJO, fontSize: 12, color: COLOR_BOOK3),),
+                    Text("Version $appVersion", style: const TextStyle(fontFamily: FONT_SFPRO, fontSize: 12, color: COLOR_BOOK3),)
                   ],
                 ),
               ],
