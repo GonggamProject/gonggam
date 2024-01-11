@@ -23,7 +23,7 @@ class _InvitedPageState extends State<InvitedPage> {
   InviteController inviteController = Get.find();
 
   void inviteProcess() async {
-    List<String> errCodes = ["GG2000", "GG2001", "GG2005"];
+    List<String> errCodes = ["GG2000", "GG2001", "GG2003", "GG2005"];
     String resCode = await GroupService.joinGroup(inviteController.inviteCode);
 
     if(errCodes.contains(resCode)) {

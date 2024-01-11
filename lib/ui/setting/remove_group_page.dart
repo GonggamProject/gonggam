@@ -148,16 +148,18 @@ class _RemoveGroupPageWidgetState extends State<RemoveGroupPageWidget> {
           height: 60,
           child: ElevatedButton(
             onPressed: () {
-              GroupService.removeGroup(groupId).then((value) async {
-                Groups groups = await GroupService.getGroupList();
-                if (groups.groups.isEmpty) {
-                  Get.delete<GroupController>();
-                  Get.offAll(const CreateBookStoreMainWidget());
-                } else {
-                  Get.find<GroupController>().resetGroup();
-                  Get.offAll(const SettingPageWidget());
-                }
-              });
+              if (removeCheck) {
+                GroupService.removeGroup(groupId).then((value) async {
+                  Groups groups = await GroupService.getGroupList();
+                  if (groups.groups.isEmpty) {
+                    Get.delete<GroupController>();
+                    Get.offAll(const CreateBookStoreMainWidget());
+                  } else {
+                    Get.find<GroupController>().resetGroup();
+                    Get.offAll(const SettingPageWidget());
+                  }
+                });
+              }
             },
             style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(

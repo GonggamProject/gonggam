@@ -119,7 +119,7 @@ class _GroupManagementPageWidgetState extends State<GroupManagementPageWidget> {
                         Get.to(const RemoveGroupPageWidget(), arguments: {"groupId": group.id, "groupName": group.name})
                       }, child: const Text("책방삭제", style: TextStyle(fontFamily: FONT_APPLESD, fontSize: 15, color: COLOR_SUB),)) :
                       InkWell(onTap: () => {
-                        group.isRepresentation ? Alert.alertDialog("대표책방은 나가기가 불가능합니다.") : Get.to(const LeaveGroupPageWidget(), arguments: {"groupId": group.id, "groupName": group.name})
+                        Get.to(const LeaveGroupPageWidget(), arguments: {"groupId": group.id, "groupName": group.name})
                       }, child: const Text("책방나가기", style: TextStyle(fontFamily: FONT_APPLESD, fontSize: 15, color: COLOR_SUB),))
                     ],),
                 ],
