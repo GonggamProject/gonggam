@@ -86,85 +86,81 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
           },
         ),
       ),
-      body: GestureDetector(
-        onTap: () {
-          FocusManager.instance.primaryFocus?.unfocus();
-        },
-        child: SafeArea(
-            minimum: PADDING_MINIMUM_SAFEAREA,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const SizedBox(height: 20,),
-                GestureDetector(
-                  child: FractionallySizedBox(
-                    alignment: Alignment.centerLeft,
-                    widthFactor: 0.7,
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(width: 1.0, color: Colors.black),
-                        ),
+      body: SafeArea(
+          minimum: PADDING_MINIMUM_SAFEAREA,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: 20,),
+              GestureDetector(
+                child: FractionallySizedBox(
+                  alignment: Alignment.centerLeft,
+                  widthFactor: 0.7,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(width: 1.0, color: Colors.black),
                       ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(groupController.group.name),
-                          const Icon(Icons.keyboard_arrow_down)
-                        ],),
                     ),
-                  ),
-                  onTap: () {
-                    showBookStoreListModal(context, groupController, (id) {
-                      Group group = groupController.groups.groups.firstWhere((element) => element.id == id);
-                      groupController.setGroup(group.copyWith());
-                      setState(() {});
-                    });
-                  },
-                ),
-                const SizedBox(
-                  height: 25,
-                ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Stack(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Positioned(
-                            top: -15,
-                            right: 0,
-                            child:
-                            Image.asset("$IMAGE_PATH/create_note_logo.png", width: 127, height: 100,)),
-                        Column(
+                        Text(groupController.group.name),
+                        const Icon(Icons.keyboard_arrow_down)
+                      ],),
+                  ),
+                ),
+                onTap: () {
+                  showBookStoreListModal(context, groupController, (id) {
+                    Group group = groupController.groups.groups.firstWhere((element) => element.id == id);
+                    groupController.setGroup(group.copyWith());
+                    setState(() {});
+                  });
+                },
+              ),
+              const SizedBox(
+                height: 25,
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Stack(
+                    children: [
+                      Positioned(
+                          top: -15,
+                          right: 0,
+                          child:
+                          Image.asset("$IMAGE_PATH/create_note_logo.png", width: 127, height: 100,)),
+                      Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: getNoteWidgets()),
+                      const Positioned(
+                          child: Column(
                             mainAxisSize: MainAxisSize.min,
-                            children: getNoteWidgets()),
-                        const Positioned(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "오늘 하루 감사했던 일을",
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "오늘 하루 감사했던 일을",
+                                style: TextStyle(
+                                    fontFamily: FONT_APPLESD,
+                                    fontSize: 15,
+                                    color: COLOR_SUB),
+                              ),
+                              Text("작성해주세요.",
                                   style: TextStyle(
                                       fontFamily: FONT_APPLESD,
                                       fontSize: 15,
-                                      color: COLOR_SUB),
-                                ),
-                                Text("작성해주세요.",
-                                    style: TextStyle(
-                                        fontFamily: FONT_APPLESD,
-                                        fontSize: 15,
-                                        color: COLOR_SUB)),
-                              ],
-                            )),
-                      ],
-                    ),
+                                      color: COLOR_SUB)),
+                            ],
+                          )),
+                    ],
                   ),
                 ),
-              ],
-            )),
+              ),
+            ],
+          ),
       ),
       bottomNavigationBar: Container(
         margin: const EdgeInsets.only(left: 30, right: 30, bottom: 32),

@@ -33,30 +33,35 @@ void main() async {
 
   await SentryFlutter.init(
         (options) => options.dsn = 'https://6291044e98b57f2507692a272fa32826@o4506444991758336.ingest.sentry.io/4506444992806912',
-    appRunner: () => runApp(GetMaterialApp(
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      builder: (context, child) => MediaQuery(
-        data: MediaQuery.of(context).copyWith(
-          textScaleFactor: 1.0,
+    appRunner: () => runApp(GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: GetMaterialApp(
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        builder: (context, child) => MediaQuery(
+          data: MediaQuery.of(context).copyWith(
+            textScaleFactor: 1.0,
+          ),
+          child: child!,
         ),
-        child: child!,
+        supportedLocales: const [
+          Locale('ko', ''),
+        ],
+        theme: ThemeData(
+          checkboxTheme: const CheckboxThemeData(splashRadius: 0),
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+        ),
+        home: const SplashWidget(),
+        navigatorObservers: [
+          FirebaseAnalyticsObserver(analytics: analytics),
+        ],
+        navigatorKey: navigatorKey,
       ),
-      supportedLocales: const [
-        Locale('ko', ''),
-      ],
-      theme: ThemeData(
-        checkboxTheme: const CheckboxThemeData(splashRadius: 0),
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-      ),
-      home: const SplashWidget(),
-      navigatorObservers: [
-        FirebaseAnalyticsObserver(analytics: analytics),
-      ],
-      navigatorKey: navigatorKey,
     )),
   );
 }
