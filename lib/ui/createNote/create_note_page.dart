@@ -7,7 +7,6 @@ import 'package:gonggam/domain/note/note.dart';
 import 'package:gonggam/service/note/note_service.dart';
 import 'package:gonggam/ui/bookstore/bookstore_main.dart';
 import 'package:gonggam/utils.dart';
-import 'package:intl/intl.dart';
 import '../../common/admob/admob.dart';
 import '../../common/constants.dart';
 import '../../controller/group_controller.dart';
@@ -33,7 +32,7 @@ class NoteData extends LinkedListEntry<NoteData> {
   }
 
   String getNoteText() => controller.text;
-  int getNoteTextLength() => controller.text.length;
+  int getNoteTextLength() => controller.text.characters.length;
   late int? noteId = null;
   late double textFieldHight = 99.0;
 }
@@ -247,6 +246,11 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
   Widget getNoteWidget(int index, NoteData data) {
     final List<String> hintOrderText = ["첫", "두", "세", "네", "다섯"];
 
+
+    /*
+    일단 문자는 1바이트 이모지는 2바이트야
+    그래서 지금 최대가 45자인데 이 기준은 바이트 단위가 아니고 문자 기준인거 같쥬?
+     */
     return Stack(
       children: [
         Padding(
