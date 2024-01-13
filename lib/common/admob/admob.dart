@@ -8,7 +8,7 @@ AdManagerInterstitialAd? _interstitialAd;
 void loadAd() {
   AdManagerInterstitialAd.load(
       adUnitId: Platform.isAndroid
-          ? 'ca-app-pub-9332149282803752/4708885284' // Android ad unit ID
+          ? 'ca-app-pub-9332149282803752/5096086415' // Android ad unit ID
           : 'ca-app-pub-9332149282803752/9605116609', // iOS ad unit ID
       request: const AdManagerAdRequest(),
       adLoadCallback: AdManagerInterstitialAdLoadCallback(
