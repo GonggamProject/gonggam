@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.a2zstudio.gonggam">
+    package="com.a2zstudio.gonggambook">
    <application
         android:label="공감책방"
         android:name="${applicationName}"
@@ -55,7 +55,7 @@
 
        <meta-data
                android:name="com.google.android.gms.ads.APPLICATION_ID"
-               android:value="ca-app-pub-9332149282803752~6847075416"/>
+               android:value="ca-app-pub-9332149282803752~4944877324"/>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
