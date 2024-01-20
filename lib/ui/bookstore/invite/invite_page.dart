@@ -1,8 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:gonggam/controller/group_controller.dart';
 import 'package:gonggam/service/customer/customer_service.dart';
+import 'package:gonggam/ui/common/alert.dart';
 import 'package:kakao_flutter_sdk_share/kakao_flutter_sdk_share.dart';
 
 import '../../../common/constants.dart';
@@ -80,7 +83,7 @@ class _InvitePageState extends State<InvitePage> {
     CustomerInfo customerInfo = await CustomerService().getCustomerInfo();
     bool isKakaotalkSharingAvailable = await ShareClient.instance.isKakaoTalkSharingAvailable();
 
-    int templateId = 97112;
+    int templateId = Random().nextInt(2) == 0 ? 97112 : 99429;
     Map<String, String> args = {
       'type': 'invite',
       'code': inviteCode,
@@ -96,7 +99,7 @@ class _InvitePageState extends State<InvitePage> {
         Uri shareUrl = await WebSharerClient.instance.makeCustomUrl(templateId: templateId, templateArgs: args);
         await launchBrowserTab(shareUrl, popupOpen: true);
       } catch (error) {
-        print('카카오톡 공유실패 $error');
+        Alert.alertDialog('카카오톡 공유실패 \n $error');
       }
     }
   }

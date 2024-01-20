@@ -5,6 +5,7 @@ import 'package:gonggam/common/prefs.dart';
 import 'package:gonggam/domain/common/response.dart' as gonggam_response;
 
 import '../../domain/customer/customer_info.dart';
+import '../auth/auth_factory.dart';
 
 class CustomerService {
   Future<CustomerInfo> getCustomerInfo() async {
@@ -14,6 +15,10 @@ class CustomerService {
     gonggam_response.Response<CustomerInfo> res = gonggam_response.Response.fromJson(
         response.data,
             (json) => CustomerInfo.fromJson(json as Map<String, dynamic>));
+
+    if (res.code == "GG1001") {
+      AuthFactory.createAuthService(Prefs.currentLoginedPlatform()).logout();
+    }
 
     return res.content!;
   }

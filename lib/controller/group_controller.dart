@@ -19,7 +19,6 @@ class GroupController extends GetxController {
   }
 
   void setGroup(Group group) {
-    Prefs.setInt("lastGroupId", group.id);
     this.group = group;
   }
 

@@ -58,7 +58,7 @@ class KakaoAuthService implements AuthInterface {
       if(info.nickname.isEmpty) { // 닉네임이 없는 유저 로그인 -> 닉네임 입력
         Get.off(const CreateNicknameWidget(), arguments: authRequest.nickname?.replaceAll(RegExp("[^0-9a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣]"), ""));
       } else {
-        if(!Get.isRegistered<GroupController>()) {
+        if(!Get.isRegistered<GroupController>() && groups.groups.isNotEmpty) {
           Group? group = groups.groups.firstWhereOrNull((element) => element.isRepresentation);
           group ??= groups.groups.first;
           Get.put(GroupController(groups, group!.copyWith()), permanent: true);

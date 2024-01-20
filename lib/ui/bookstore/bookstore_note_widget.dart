@@ -20,7 +20,8 @@ Widget noteFactory(BuildContext context, int currentDateState, String customerId
   try {
     writerName = groupController.group.members.firstWhere((element) => element.customerId == customerId).nickname;
   } catch (e) {
-    Alert.alertDialog("오류발생(mike에게 공유) - groupId : ${groupController.group.id}, customerId : $customerId, members : ${groupController.group.members.join(",")}");
+    GroupService.getGroupList();
+    writerName = groupController.group.members.firstWhere((element) => element.customerId == customerId).nickname;
   }
 
   return FutureBuilder(
@@ -120,13 +121,6 @@ Widget getBeforeWriteMyNote(String currentGroupName, int selectedGroupId) {
             ),
           ),
         ),
-        // InkWell(
-        //   onTap: () {
-        //     AuthFactory.createAuthService(Prefs.currentLoginedPlatform())
-        //         .logout();
-        //   },
-        //   child: Text("Logout"),
-        // )
       ],
     ),
   );

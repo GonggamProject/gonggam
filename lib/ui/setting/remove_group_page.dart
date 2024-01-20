@@ -77,9 +77,9 @@ class _RemoveGroupPageWidgetState extends State<RemoveGroupPageWidget> {
                         spacing: 5,
                         runSpacing: 2,
                         children: [
-                          const Text('운영중인 책방을 삭제하면 멤버들이 작성한', style: TextStyle(fontFamily: FONT_APPLESD, fontSize: 15, color: COLOR_SUB),),
                           RichText(text: const TextSpan(children: [
-                            TextSpan(text: ' 모든 내용은 즉시 삭제됩니다. ', style: TextStyle(fontFamily: FONT_APPLESD, fontSize: 15, color: COLOR_BOOK4)),
+                            TextSpan(text: '운영중인 책방을 삭제하면 멤버들이 작성한 ', style: TextStyle(fontFamily: FONT_APPLESD, fontSize: 15, color: COLOR_SUB)),
+                            TextSpan(text: '모든 내용은 즉시 삭제됩니다.', style: TextStyle(fontFamily: FONT_APPLESD, fontSize: 15, color: COLOR_BOOK4)),
                           ])),
                         ]),)
                   ],),

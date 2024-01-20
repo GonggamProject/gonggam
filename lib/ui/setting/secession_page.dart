@@ -74,9 +74,9 @@ class _SecessionPageWidgetState extends State<SecessionPageWidget> {
                         spacing: 5,
                         runSpacing: 2,
                         children: [
-                          Text('또한 ${Prefs.getCustomerName()}님이 참여중인 책방에서 작성했던', style: const TextStyle(fontFamily: FONT_APPLESD, fontSize: 15, color: COLOR_SUB),),
-                          RichText(text: const TextSpan(children: [
-                            TextSpan(text: "모든 감사일기는 즉시 삭제되며 작성 된 내용은 복구 되지 않습니다.", style: TextStyle(fontFamily: FONT_APPLESD, fontSize: 15, color: COLOR_BOOK4))
+                          RichText(text: TextSpan(children: [
+                            TextSpan(text: '또한 ${Prefs.getCustomerName()}님이 참여중인 책방에서 작성했던 ', style: const TextStyle(fontFamily: FONT_APPLESD, fontSize: 15, color: COLOR_SUB)),
+                            const TextSpan(text: "모든 감사일기는 즉시 삭제되며 작성 된 내용은 복구 되지 않습니다.", style: TextStyle(fontFamily: FONT_APPLESD, fontSize: 15, color: COLOR_BOOK4))
                           ])),
                         ]),)
                   ],),

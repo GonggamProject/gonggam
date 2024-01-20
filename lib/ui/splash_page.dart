@@ -57,15 +57,9 @@ class _SplashWidgetState extends State<SplashWidget> {
       Groups groups = await GroupService.getGroupList();
       if(groups.groups.isNotEmpty) {
         if(!Get.isRegistered<GroupController>()) {
-          int groupId = Prefs.getLastGroupId();
 
-          Group group;
-          try {
-            group = groups.groups.firstWhere((element) => groupId == 0 ? element.isRepresentation : element.id == groupId);
-          } catch (error) {
-            group = groups.groups.first;
-            Prefs.setLastGroupId(group.id);
-          }
+          Group? group = groups.groups.firstWhereOrNull((element) => element.isRepresentation);
+          group ??= groups.groups.first;
           Get.put(GroupController(groups, group.copyWith()), permanent: true);
         }
         Get.off(const BookStoreMainWidget(), transition: Transition.fadeIn,

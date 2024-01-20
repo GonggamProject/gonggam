@@ -49,7 +49,6 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
   void initState() {
     super.initState();
     getNoteData();
-    showAd();
   }
 
   void getNoteData() async {
@@ -168,9 +167,12 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
         height: 60,
         child: ElevatedButton(
           onPressed: () {
-            NoteService.postNoteList(groupController.group.id, Utils.formatDate("yyyyMMdd", currentDateState), noteDataList, isEditMode).then((value) => {
-              Navigator.push( context, MaterialPageRoute( builder: (context) => const BookStoreMainWidget()), ).then((value) => setState(() {}))
-            });
+            if (isAllNoteWrited()) {
+              NoteService.postNoteList(groupController.group.id, Utils.formatDate("yyyyMMdd", currentDateState), noteDataList, isEditMode).then((value) {
+                showAd();
+                Navigator.push( context, MaterialPageRoute( builder: (context) => const BookStoreMainWidget()), ).then((value) => setState(() {}));
+              });
+            }
           },
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
@@ -242,11 +244,6 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
   Widget getNoteWidget(int index, NoteData data) {
     final List<String> hintOrderText = ["첫", "두", "세", "네", "다섯"];
 
-
-    /*
-    일단 문자는 1바이트 이모지는 2바이트야
-    그래서 지금 최대가 45자인데 이 기준은 바이트 단위가 아니고 문자 기준인거 같쥬?
-     */
     return Stack(
       children: [
         Padding(

@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -14,6 +15,7 @@ class WalkthroughtWidget extends StatefulWidget {
 
 class _WalkthroughtWidgetState extends State<WalkthroughtWidget>{
   final _controller = PageController();
+  static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   int _currentIndex = 0;
 

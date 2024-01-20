@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:17685987514:android:3c57ef889c367628b70283",
+        "mobilesdk_app_id": "1:17685987514:android:04545bbb59767918b70283",
         "android_client_info": {
-          "package_name": "com.a2zstudio.gonggam"
+          "package_name": "com.a2zstudio.gonggambook"
         }
       },
       "oauth_client": [],
@@ -23,7 +23,7 @@
           "other_platform_oauth_client": []
         }
       },
-      "admob_app_id": "ca-app-pub-9332149282803752~6847075416"
+      "admob_app_id": "ca-app-pub-9332149282803752~4944877324"
     }
   ],
   "configuration_version": "1"

@@ -35,6 +35,7 @@ class _BookStoreMainWidgetState extends State<BookStoreMainWidget> {
     super.initState();
 
     _future = getBottomNoteList(selectedGroupId, customerId, _changeCustomerId);
+    groupController.setGroup(groupController.groups.groups.firstWhere((element) => element.id == selectedGroupId).copyWith());
 
     if(isRefreseh) {
       setState(() {
