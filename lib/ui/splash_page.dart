@@ -1,11 +1,13 @@
 
 import 'dart:async';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:gonggam/common/admob/admob.dart';
+import 'package:gonggam/common/notification.dart';
 import 'package:gonggam/controller/invite_controller.dart';
 import 'package:gonggam/ui/bookstore/invite/invited_page.dart';
 import 'package:gonggam/ui/common/alert.dart';
@@ -52,6 +54,9 @@ class _SplashWidgetState extends State<SplashWidget> {
       Utils.showUpdateDialog(version);
       return;
     }
+
+    String? token = await FirebaseMessaging.instance.getToken();
+    print("FCM 토큰 - ${token!}");
 
     if(Prefs.isLogined()) {
       Groups groups = await GroupService.getGroupList();

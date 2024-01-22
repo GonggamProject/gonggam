@@ -7,7 +7,6 @@ import '../../common/http/http_client.dart';
 import '../../controller/group_controller.dart';
 import '../../domain/common/response.dart';
 import '../../domain/group/groups.dart';
-import '../../ui/common/alert.dart';
 
 class GroupService {
   static Future<Groups> getGroupList() async {
@@ -58,5 +57,11 @@ class GroupService {
   static Future<void> kickOutMember(int groupId, String targetCustomerId) async {
     await GongGamHttpClient().deleteRequest("/v1/groups/$groupId/members/$targetCustomerId/kick-out", null);
     getGroupList();
+  }
+
+  // 그룹 이름 수정
+  static Future<void> groupNameChange(int groupId, String groupName) async {
+    await GongGamHttpClient().putRequest("/v1/groups/name", {"groupId": groupId, "groupName": groupName});
+    await getGroupList();
   }
 }

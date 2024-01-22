@@ -130,10 +130,9 @@ class Alert {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
+                  Expanded(child: Container(
                     padding: const EdgeInsets.fromLTRB(10, 0, 5, 10),
                     height: 60,
-                    width: 155,
                     child: ElevatedButton(onPressed: () {
                       Navigator.pop(context);
                     },
@@ -149,11 +148,10 @@ class Alert {
                       ),
                       child: const Text("취소", style: TextStyle(fontFamily: FONT_APPLESD, fontSize: 18, color: Colors.black),),
                     ),
-                  ),
-                  Container(
+                  ),),
+                  Expanded(child: Container(
                     padding: const EdgeInsets.fromLTRB(5, 0, 10, 10),
                     height: 60,
-                    width: 155,
                     child: ElevatedButton(onPressed: () {
                       Navigator.pop(context);
                       confirmAction();
@@ -170,7 +168,7 @@ class Alert {
                       ),
                       child: Text(confirmBtnText, style: const TextStyle(fontFamily: FONT_APPLESD, fontSize: 18, color: Colors.white),),
                     ),
-                  ),
+                  ),),
                 ],
               ),
             ],

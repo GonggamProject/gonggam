@@ -31,24 +31,41 @@ Widget noteFactory(BuildContext context, int currentDateState, String customerId
           return const Center(child: SizedBox(width: 10, height: 10, child: CircularProgressIndicator(),));
         } else {
           gonggam_response.Response<Notes> noteRes = snapshot.data!;
-          if(currentDateState == 0) { // 오늘 데이터
+          // 오늘 데이터 조회
+          if(currentDateState == 0) {
+            // 쓴 노트가 없다
             if(noteRes.content!.list.isEmpty) {
+              // 내 노트 조회시
               if(customerId == Prefs.getCustomerId()) {
+                // 내가 쓰기전 노트
                 return getBeforeWriteMyNote(groupController.group.name, groupController.group.id);
-              } else {
+              }
+              // 친구노트 조회시
+              else {
+                // 내꺼 안씀 / 다른사람 씀
                 if(noteRes.code == "GG3003") {
-                  return getBeforeWriteMyNoteAndReadOtherNote();
-                } else {
-                  return getBeforeWriteOtherNote(writerName);
+                  return getBeforeWriteMyNoteAndReadOtherNote(writerName);
+                }
+                // 내꺼 안씀 / 다른사람 안씀
+                else if(noteRes.code == "GG3004") {
+                  return getBeforeWriteOtherNoteWithButton(writerName);
+                }
+                // 내꺼 씀 / 다른사람 안씀
+                else {
+                  return getBeforeWriteOtherNoteWithoutButton(writerName);
                 }
               }
-            } else {
+            }
+            // 노트를 씀
+            else {
               return getNote(context, noteRes.content!.list, writerName, customerId, currentDateState, groupController.group.id);
             }
-          } else { // 다른날데이터
+          // 과거 데이터 조회
+          } else {
+            // 글을 안썼으면 비어있는 노트 보여줌
             if (noteRes.content!.list.isEmpty) {
               return getBlankNote(currentDateState);
-            } else {
+            } else { // 글을 썼으면 노트 보여줌
               return getNote(context, noteRes.content!.list, writerName, customerId, currentDateState, groupController.group.id);
             }
           }
@@ -64,8 +81,17 @@ Widget getBlankNote(int currentDateState) {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text("${Utils.formatDate("yyy.MM.dd", currentDateState)}에는"),
-        const Text("감사일기 작성을 쉬었어요."),
+        Text("${Utils.formatDate("yyy.MM.dd", currentDateState)}에는", style: const TextStyle(
+            fontFamily: FONT_APPLESD,
+            fontSize: 15,
+            color: COLOR_GRAY)),
+        const SizedBox(
+          height: 5,
+        ),
+        const Text("감사일기 작성을 쉬었어요.", style: TextStyle(
+            fontFamily: FONT_APPLESD,
+            fontSize: 15,
+            color: COLOR_GRAY)),
       ],
     ),
   );
@@ -83,10 +109,10 @@ Widget getBeforeWriteMyNote(String currentGroupName, int selectedGroupId) {
           onTap: () {
             Get.to(const CreateNoteWidget(), duration: const Duration(seconds: 0));
           },
-          child: Container(
+          child: const SizedBox(
             height: 138,
             width: 292,
-            child: const Column(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
@@ -127,7 +153,7 @@ Widget getBeforeWriteMyNote(String currentGroupName, int selectedGroupId) {
 }
 
 // 내 일기 쓰기전에 다른 사람일기 읽기시
-Widget getBeforeWriteMyNoteAndReadOtherNote() {
+Widget getBeforeWriteMyNoteAndReadOtherNote(String nickname) {
   return Center(
     child: Column(
       mainAxisSize: MainAxisSize.max,
@@ -138,33 +164,33 @@ Widget getBeforeWriteMyNoteAndReadOtherNote() {
           onTap: () {
             Get.to(const CreateNoteWidget(), duration: const Duration(seconds: 0));
           },
-          child: const SizedBox(
+          child: SizedBox(
             height: 138,
             width: 292,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   "오늘 하루 나의 감사한 일을 적고",
                   style: TextStyle(
                       fontFamily: FONT_APPLESD,
                       fontSize: 15,
                       color: COLOR_GRAY),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
                 Text(
-                  "친구의 감사 일기를 확인해보세요!",
-                  style: TextStyle(
+                  "$nickname님의 감사 일기를 확인해보세요!",
+                  style: const TextStyle(
                       fontFamily: FONT_APPLESD,
                       fontSize: 15,
                       color: COLOR_GRAY),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 30,
                 ),
-                Text(
+                const Text(
                   "감사일기 작성하기",
                   style: TextStyle(
                     fontFamily: FONT_APPLESD,
@@ -181,14 +207,14 @@ Widget getBeforeWriteMyNoteAndReadOtherNote() {
   );
 }
 
-// 다른유저 일기 - 쓰기전
-Widget getBeforeWriteOtherNote(String customerName) {
+// 다른유저 일기 - 쓰기전 (버튼 없음)
+Widget getBeforeWriteOtherNoteWithoutButton(String nickname) {
   return Center(
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          "$customerName님이",
+          "$nickname님이",
           style: const TextStyle(
               fontFamily: FONT_APPLESD, fontSize: 15, color: COLOR_GRAY),
         ),
@@ -200,6 +226,53 @@ Widget getBeforeWriteOtherNote(String customerName) {
           style: TextStyle(
               fontFamily: FONT_APPLESD, fontSize: 15, color: COLOR_GRAY),
         ),
+      ],
+    ),
+  );
+}
+
+// 다른유저 일기 - 쓰기전 (버튼 있음)
+Widget getBeforeWriteOtherNoteWithButton(String nickname) {
+  return Center(
+    child: Column(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        InkWell(
+          onTap: () {
+            Get.to(const CreateNoteWidget(), duration: const Duration(seconds: 0));
+          },
+          child: SizedBox(
+            height: 138,
+            width: 292,
+            child: Column(
+              children: [
+                Text(
+                  "$nickname님이",
+                  style: const TextStyle(
+                      fontFamily: FONT_APPLESD, fontSize: 15, color: COLOR_GRAY),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                const Text(
+                  "감사일기를 작성하기 전이에요!",
+                  style: TextStyle(
+                      fontFamily: FONT_APPLESD, fontSize: 15, color: COLOR_GRAY),
+                ),
+                const Text(
+                  "감사일기 작성하기",
+                  style: TextStyle(
+                    fontFamily: FONT_APPLESD,
+                    fontSize: 15,
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        )
       ],
     ),
   );

@@ -13,6 +13,13 @@ class Utils {
     return DateFormat(format).format(now);
   }
 
+  static bool isAfterCreateAt(String createAt, int daysToAdd) {
+    DateTime targetDatetime = DateTime.now().add(Duration(days: daysToAdd));
+    DateTime targetDate = DateTime(targetDatetime.year, targetDatetime.month, targetDatetime.day);
+
+    return DateTime.parse(createAt).isBefore(targetDate);
+  }
+
   static String getProfileImageUrl(int hashCode) {
     int profileNo = (hashCode % 14) + 1;
     return "$S3_URL/profile$profileNo.png";

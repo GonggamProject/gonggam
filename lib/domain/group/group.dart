@@ -13,8 +13,9 @@ class Group {
   List<Member> members;
   @JsonKey(name: "isUpdated", defaultValue: false)
   bool isUpdated;
+  String createdAt;
 
-  Group(this.id, this.name, this.isRepresentation, this.members, this.isUpdated);
+  Group(this.id, this.name, this.isRepresentation, this.members, this.isUpdated, this.createdAt);
 
   factory Group.fromJson(Map<String, dynamic> json) => _$GroupFromJson(json);
   Map<String, dynamic> toJson() => _$GroupToJson(this);
@@ -25,7 +26,8 @@ class Group {
       name,
       isRepresentation,
       members,
-      isUpdated
+      isUpdated,
+      createdAt
     );
   }
 }

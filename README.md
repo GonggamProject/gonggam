@@ -18,3 +18,5 @@ samples, guidance on mobile development, and a full API reference.
 
 ## Get android key tool
 keytool -exportcery -alias upload -keystore upload-keystore.jks | openssl sha1 -binary | openssl base64
+
+flutter pub run build_runner build

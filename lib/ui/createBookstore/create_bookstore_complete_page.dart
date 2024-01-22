@@ -91,10 +91,9 @@ class _CreateBookStoreCompleteWidgetState extends State<CreateBookStoreCompleteW
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           groupController.group.members.firstWhere((element) => element.customerId == Prefs.getCustomerId()).rule.isOwner() ?
-                          Container(
-                            margin: const EdgeInsets.only(right: 10),
-                            child: SizedBox(
-                              width: 150,
+                          Expanded(
+                            child: Container(
+                              padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
                               height: 50,
                               child: ElevatedButton(onPressed: () {
                                 Get.to(const InvitePage());
@@ -113,23 +112,25 @@ class _CreateBookStoreCompleteWidgetState extends State<CreateBookStoreCompleteW
                               ),
                             ),
                           ) : const SizedBox.shrink(),
-                          SizedBox(
-                            width: 150,
-                            height: 50,
-                            child: ElevatedButton(onPressed: () {
-                              Get.to(const CreateNoteWidget());
-                            },
-                              style: ElevatedButton.styleFrom(
-                                side: const BorderSide(
-                                  color: COLOR_SUB,
+                          Expanded(
+                            child: Container(
+                              padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                              height: 50,
+                              child: ElevatedButton(onPressed: () {
+                                Get.to(const CreateNoteWidget());
+                              },
+                                style: ElevatedButton.styleFrom(
+                                  side: const BorderSide(
+                                    color: COLOR_SUB,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  backgroundColor: Colors.white,
+                                  shadowColor: Colors.transparent,
                                 ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                backgroundColor: Colors.white,
-                                shadowColor: Colors.transparent,
+                                child: const Text("감사일기 쓰기", style: TextStyle(fontFamily: FONT_APPLESD, fontSize: 15, color: COLOR_SUB),),
                               ),
-                              child: const Text("감사일기 쓰기", style: TextStyle(fontFamily: FONT_APPLESD, fontSize: 15, color: COLOR_SUB),),
                             ),
                           ),
                         ],

@@ -11,6 +11,7 @@ AuthRequest _$AuthRequestFromJson(Map<String, dynamic> json) => AuthRequest(
       json['platformType'] as String,
       json['nickname'] as String?,
       json['profileImageUrl'] as String?,
+      json['token'] as String?,
     );
 
 Map<String, dynamic> _$AuthRequestToJson(AuthRequest instance) =>
@@ -19,4 +20,5 @@ Map<String, dynamic> _$AuthRequestToJson(AuthRequest instance) =>
       'platformType': instance.platformType,
       'nickname': instance.nickname,
       'profileImageUrl': instance.profileImageUrl,
+      'token': instance.token,
     };

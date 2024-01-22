@@ -46,5 +46,6 @@ const LINK_MAKERS = "https://gonggam.me/makers";
 const LINK_QNA = "https://gonggam.me/qna";
 
 // url
-const SERVER_URL = "http://43.201.183.55:8080";
+const SERVER_URL = "https://port-0-gonggam-server-ac2nll600wrs.sel3.cloudtype.app";
+// const SERVER_URL = "http://43.201.183.55:8080";
 const S3_URL = "https://gonggamimage.s3.ap-northeast-2.amazonaws.com";

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../common/constants.dart';
+import '../common/notification.dart';
 import 'login_page.dart';
 
 
@@ -15,7 +16,6 @@ class WalkthroughtWidget extends StatefulWidget {
 
 class _WalkthroughtWidgetState extends State<WalkthroughtWidget>{
   final _controller = PageController();
-  static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   int _currentIndex = 0;
 

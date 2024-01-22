@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:gonggam/common/prefs.dart';
@@ -32,12 +33,15 @@ class KakaoAuthService implements AuthInterface {
         await Kakao.UserApi.instance.loginWithKakaoAccount();
       }
 
-      Kakao.User user = await Kakao.UserApi.instance.me();
-      gonggam_auth.AuthRequest authRequest = gonggam_auth.AuthRequest(
-        user.id.toString(),
-        "KAKAO",
-        user.kakaoAccount?.profile?.nickname?.replaceAll(RegExp("[^0-9a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣]"), ""),
-        Utils.getProfileImageUrl(user.id.toString().hashCode)
+    final fcmToken = await FirebaseMessaging.instance.getToken();
+
+    Kakao.User user = await Kakao.UserApi.instance.me();
+        gonggam_auth.AuthRequest authRequest = gonggam_auth.AuthRequest(
+          user.id.toString(),
+          "KAKAO",
+          user.kakaoAccount?.profile?.nickname?.replaceAll(RegExp("[^0-9a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣]"), ""),
+          Utils.getProfileImageUrl(user.id.toString().hashCode),
+          fcmToken
       );
 
       loginSuccess(authRequest);

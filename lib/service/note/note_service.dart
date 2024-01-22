@@ -31,9 +31,4 @@ class NoteService {
   static Future<void> deleteNote(String targetedAt, int groupId) async {
     await GongGamHttpClient().deleteRequest("/v1/notes", {"targetedAt": targetedAt, "groupId": groupId});
   }
-
-  // static Future<void> updateNoteList(int groupId, String targetedAt, LinkedList<NoteData> noteList) async {
-  //   Notes notes = Notes(groupId, targetedAt, noteList.indexed.map((e) => Note(e.$1, e.$2.getNoteText())).toList());
-  //   GongGamHttpClient().postRequest("/v1/notes", notes.toJson());
-  // }
 }

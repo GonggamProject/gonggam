@@ -15,6 +15,7 @@ Group _$GroupFromJson(Map<String, dynamic> json) => Group(
               .toList() ??
           [],
       json['isUpdated'] as bool? ?? false,
+      json['createdAt'] as String,
     );
 
 Map<String, dynamic> _$GroupToJson(Group instance) => <String, dynamic>{
@@ -23,4 +24,5 @@ Map<String, dynamic> _$GroupToJson(Group instance) => <String, dynamic>{
       'isRepresentation': instance.isRepresentation,
       'members': instance.members,
       'isUpdated': instance.isUpdated,
+      'createdAt': instance.createdAt,
     };

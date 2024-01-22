@@ -97,10 +97,12 @@ class _BookStoreMainWidgetState extends State<BookStoreMainWidget> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      _changePage(-1);
+                      Utils.isAfterCreateAt(groupController.group.createdAt, _currentPageIndex - 365) ? _changePage(-1) : null;
                     },
                     style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.black,
+                        foregroundColor: Utils.isAfterCreateAt(groupController.group.createdAt, _currentPageIndex - 365)
+                            ? Colors.black
+                            : COLOR_GRAY,
                         backgroundColor: Colors.transparent,
                         shadowColor: Colors.transparent),
                     child: const Icon(Icons.keyboard_arrow_left),

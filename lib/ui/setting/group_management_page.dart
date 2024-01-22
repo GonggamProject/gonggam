@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:gonggam/controller/group_controller.dart';
 import 'package:gonggam/domain/group/group.dart';
@@ -39,11 +40,13 @@ class _GroupManagementPageWidgetState extends State<GroupManagementPageWidget> {
         ),
         body: SafeArea(
             minimum: PADDING_MINIMUM_SAFEAREA,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: groupController.groups.groups.isNotEmpty ? getGroupManagementWidgets() : getEmptyWidget()
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: getGroupManagementWidgets()
+              ),
             )
         ),
     );
@@ -62,7 +65,7 @@ class _GroupManagementPageWidgetState extends State<GroupManagementPageWidget> {
       Row(
         children: [
           const Text("총 ", style: TextStyle(fontFamily: FONT_APPLESD, fontSize: 15),),
-          Text(groupController.groups.groups.length.toString(), style: TextStyle(fontFamily: FONT_APPLESD, fontSize: 15, color: COLOR_BLUE, fontWeight: FontWeight.bold),),
+          Text(groupController.groups.groups.length.toString(), style: const TextStyle(fontFamily: FONT_APPLESD, fontSize: 15, color: COLOR_BLUE, fontWeight: FontWeight.bold),),
           const Text("개의 책방에 참여중이에요.", style: TextStyle(fontFamily: FONT_APPLESD, fontSize: 15),)
         ],
       ),
@@ -100,6 +103,15 @@ class _GroupManagementPageWidgetState extends State<GroupManagementPageWidget> {
                             getMemberLabel(isOwner),
                             const SizedBox(width: 10,),
                             Text(group.name, style: const TextStyle(fontFamily: FONT_APPLESD, fontSize: 15, fontWeight: FontWeight.bold),),
+                            const SizedBox(width: 5,),
+                            InkWell(
+                              child: const Icon(Icons.edit, size: 15, color: COLOR_SUB,),
+                              onTap: () => {
+                                changeGroupNameModal(context, group.id, group.name, () {
+                                  setState(() {
+                                  });
+                                })
+                            },)
                           ],),
                           group.isRepresentation ? const Icon(Icons.star_rate_rounded, size: 25,) :
                           GestureDetector(
@@ -209,13 +221,131 @@ class _GroupManagementPageWidgetState extends State<GroupManagementPageWidget> {
     });
   }
 
-  //TODO
-   List<Widget> getEmptyWidget() {
-    List<Widget> widgets = [];
+  Future changeGroupNameModal(BuildContext context, int groupId, String currentGroupName, Function() callback) {
+    String groupName = "";
 
-    widgets.add(const Text("이용중인 책방이 없어요."));
-    // widgets.add(Text("이용중인 책방이 없어요."));
+    return showModalBottomSheet(
+      isScrollControlled: true,
+        context: context,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(25.0),
+          ),
+        ),
+        builder: (context) {
+          return StatefulBuilder(
+            builder: (BuildContext context, StateSetter bottomState) {
+              return Padding(
+                  padding: EdgeInsets.fromLTRB(30, 20, 30, MediaQuery.of(context).viewInsets.bottom + 20),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        const Text("책방이름 수정", style: TextStyle(fontFamily: FONT_APPLESD, fontSize: 15, color: COLOR_SUB1),),
+                        const SizedBox(height: 5,),
+                        SizedBox(
+                          child: TextField(
+                            maxLength: MAX_GROUPNAME_LENGTH,
+                            decoration: InputDecoration(
+                              suffix: RichText(text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                        text: groupName.length.toString(),
+                                        style: const TextStyle(fontFamily: FONT_APPLESD, fontSize: 12, color: COLOR_BOOK4, fontWeight: FontWeight.bold)
+                                    ),
+                                    const TextSpan(
+                                        text: " / ",
+                                        style: TextStyle(fontFamily: FONT_APPLESD, fontSize: 12, color: COLOR_SUB, fontWeight: FontWeight.bold)
+                                    ),
+                                    TextSpan(
+                                        text: MAX_GROUPNAME_LENGTH.toString(),
+                                        style: const TextStyle(fontFamily: FONT_APPLESD, fontSize: 12, color: COLOR_SUB, fontWeight: FontWeight.bold)
+                                    ),
+                                  ]
+                              ),),
+                              contentPadding: const EdgeInsets.all(20),
+                              counterText: "",
+                              hintText: currentGroupName,
+                              hintStyle: const TextStyle(fontFamily: FONT_APPLESD, fontSize: 15, color: Color(0xFFB4B4B4),),
+                              filled: true,
+                              fillColor: const Color(0xFFF2F2F2),
+                              border: InputBorder.none,
+                              enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(0xFFF2F2F2),
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.all(Radius.circular(10)),
+                              ),
+                              focusedBorder:  const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(0xFFF2F2F2),
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.all(Radius.circular(10)),
+                              ),
+                              errorBorder:  const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(0xFFF2F2F2),
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.all(Radius.circular(10)),
 
-    return widgets;
-   }
+                              ),
+                              focusedErrorBorder:  const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(0xFFF2F2F2),
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.all(Radius.circular(10)),
+                              ),
+                            ),
+                            keyboardType: TextInputType.text,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.allow(RegExp("[0-9a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣]")),
+                            ],
+                            onChanged: (value) {
+                              bottomState(() {
+                                setState(() {
+                                  groupName = value;
+                                });
+                              });
+                            },
+                            cursorRadius: const Radius.circular(5),
+                          ),
+                        ),
+                        const SizedBox(height: 10,),
+                        const Text("닉네임은 최대 10자까지 작성할 수 있어요.", style: TextStyle(fontFamily: FONT_APPLESD, fontSize: 12, color: Colors.blue),),
+                        const SizedBox(height: 10,),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 60,
+                          child: ElevatedButton(onPressed: () {
+                            Navigator.pop(context);
+                            Alert.confirmDialog(context, "", "책방이름을 $groupName(으)로 수정할까요?", "수정하기", () {
+                              try {
+                                GroupService.groupNameChange(groupId, groupName).then((value) {
+                                  callback();
+                                });
+                              } catch (e) {
+                                Alert.alertDialog("책방이름 수정 중 오류가 발생했어요.\n잠시 후 다시 시도해 주세요.");
+                              }
+                            });
+                          },
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              backgroundColor: groupName.isNotEmpty ? COLOR_BOOK5 : const Color(0xFFCDCDCD),
+                              shadowColor: Colors.transparent,
+                            ),
+                            child: const Text("수정하기", style: TextStyle(fontFamily: FONT_APPLESD, fontSize: 18),),
+                          ),),
+                      ]));
+            },
+          );
+        });
+  }
 }
+
+

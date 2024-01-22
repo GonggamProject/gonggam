@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
@@ -29,11 +30,14 @@ class AppleAuthService implements AuthInterface {
       ],
     );
 
+    final fcmToken = await FirebaseMessaging.instance.getToken();
+
     AuthRequest user = AuthRequest(
         credential.authorizationCode,
         "APPLE",
         "",
-        Utils.getProfileImageUrl(credential.authorizationCode.hashCode)
+        Utils.getProfileImageUrl(credential.authorizationCode.hashCode),
+        fcmToken
     );
     loginSuccess(user);
   }

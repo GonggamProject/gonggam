@@ -29,4 +29,8 @@ class GroupController extends GetxController {
   void setRepresentationGroup() {
     group = groups.groups.firstWhere((element) => element.isRepresentation).copyWith();
   }
+
+  String getNickname(int groupId, String customerId) {
+    return groups.groups.firstWhere((element) => element.id == groupId).members.firstWhere((element) => element.customerId == customerId).nickname;
+  }
 }
