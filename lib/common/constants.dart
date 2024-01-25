@@ -6,6 +6,7 @@ const IMAGE_PATH = "assets/images";
 const FONT_SFPRO = "SF Pro";
 const FONT_NANUMMYNGJO = "Nanum Myngjo";
 const FONT_APPLESD = "Apple SD Gothic Neo";
+const FONT_BODONI = "Bodoni";
 
 //TODO 이거 정확하게 어떻게 동작하는지 봐야겠다. safearea가 있는 애들한테만 이게 먹혔으면함
 const PADDING_MINIMUM_SAFEAREA = EdgeInsets.fromLTRB(27, 0, 27, 0);
@@ -46,6 +47,6 @@ const LINK_MAKERS = "https://gonggam.me/makers";
 const LINK_QNA = "https://gonggam.me/qna";
 
 // url
-const SERVER_URL = "https://port-0-gonggam-server-ac2nll600wrs.sel3.cloudtype.app";
-// const SERVER_URL = "http://43.201.183.55:8080";
+// const SERVER_URL = "https://port-0-gonggam-server-ac2nll600wrs.sel3.cloudtype.app";
+const SERVER_URL = "http://43.201.183.55:8080";
 const S3_URL = "https://gonggamimage.s3.ap-northeast-2.amazonaws.com";

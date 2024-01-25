@@ -50,9 +50,9 @@ class Alert {
         });
   }
 
-  static void alertActionDialog(BuildContext context, String title, String message, Function() action) {
+  static void alertActionDialog(String title, String message, Function() action) {
     showDialog(
-        context: context,
+        context: navigatorKey.currentContext!,
         barrierDismissible: false,
         builder: (BuildContext context) {
           return AlertDialog(
@@ -64,7 +64,7 @@ class Alert {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Text(title, style: const TextStyle(fontFamily: FONT_APPLESD, fontSize: 18, fontWeight: FontWeight.bold, color: COLOR_SUB1),),
+                title.isNotEmpty ? Text(title, style: const TextStyle(fontFamily: FONT_APPLESD, fontSize: 18, fontWeight: FontWeight.bold, color: COLOR_SUB1),) : const SizedBox.shrink(),
                 const SizedBox(height: 17,),
                 Container(
                     width: 350,
@@ -100,9 +100,9 @@ class Alert {
         });
   }
 
-  static void confirmDialog(BuildContext context, String title, String message, String confirmBtnText, Function() confirmAction) {
+  static void confirmDialog(String title, String message, String confirmBtnText, Function() confirmAction) {
     showDialog(
-        context: context,
+        context: navigatorKey.currentContext!,
         barrierDismissible: false,
         builder: (BuildContext context) {
           return AlertDialog(

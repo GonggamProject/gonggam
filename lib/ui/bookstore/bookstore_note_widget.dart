@@ -4,6 +4,7 @@ import 'package:gonggam/service/group/group_service.dart';
 import 'package:gonggam/service/note/note_service.dart';
 import 'package:get/get.dart';
 import 'package:gonggam/ui/bookstore/bookstore_main.dart';
+import 'package:gonggam/ui/bookstore/share_note_widget.dart';
 
 import '../../common/constants.dart';
 import '../../common/prefs.dart';
@@ -310,7 +311,7 @@ List<Widget> getNoteWidgets(BuildContext context, List<Note> noteData, String wr
           icon: Image.asset("$IMAGE_PATH/button_note_setting.png"),
           iconSize: 21.0,
           onPressed: () {
-            showSettingModal(context, currentDateState, groupId);
+            showSettingModal(context, currentDateState, groupId, noteData);
           },
         ),
       ) : const SizedBox.shrink()
@@ -334,7 +335,7 @@ List<Widget> getNoteWidgets(BuildContext context, List<Note> noteData, String wr
   return widgets;
 }
 
-Future showSettingModal(BuildContext context, int currentDateState, int groupId) {
+Future showSettingModal(BuildContext context, int currentDateState, int groupId, List<Note> noteData) {
   return showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -376,6 +377,36 @@ Future showSettingModal(BuildContext context, int currentDateState, int groupId)
                       ),
                     ),
                   ),
+                  // const SizedBox(
+                  //   height: 18,
+                  // ),
+                  // SizedBox(
+                  //   width: double.infinity,
+                  //   height: 60,
+                  //   child: ElevatedButton(
+                  //     onPressed: () {
+                  //       Navigator.pop(context);
+                  //       Get.to(const ShareNoteWidget(), arguments: noteData);
+                  //     },
+                  //     style: ElevatedButton.styleFrom(
+                  //       side: const BorderSide(
+                  //         color: COLOR_SUB,
+                  //       ),
+                  //       shape: RoundedRectangleBorder(
+                  //         borderRadius: BorderRadius.circular(10.0),
+                  //       ),
+                  //       backgroundColor: Colors.white,
+                  //       shadowColor: Colors.transparent,
+                  //     ),
+                  //     child: const Text(
+                  //       "감사일기 공유",
+                  //       style: TextStyle(
+                  //           fontFamily: FONT_APPLESD,
+                  //           fontSize: 15,
+                  //           color: COLOR_SUB),
+                  //     ),
+                  //   ),
+                  // ),
                   const SizedBox(
                     height: 18,
                   ),
@@ -384,7 +415,7 @@ Future showSettingModal(BuildContext context, int currentDateState, int groupId)
                     height: 60,
                     child: ElevatedButton(
                       onPressed: () {
-                        Alert.confirmDialog(context, "${Utils.formatDate("yyyy.MM.dd", currentDateState)} 감사일기를 삭제할까요?",
+                        Alert.confirmDialog("${Utils.formatDate("yyyy.MM.dd", currentDateState)} 감사일기를 삭제할까요?",
                             "삭제하면 복구 할 수 없어요!\n신중하게 선택해주세요.", "감사일기삭제", () {
                               NoteService.deleteNote(Utils.formatDate("yyyyMMdd", currentDateState), groupId).then((value) => {
                                 Get.off(const BookStoreMainWidget(), arguments: true)

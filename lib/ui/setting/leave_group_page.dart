@@ -165,9 +165,7 @@ class _LeaveGroupPageWidgetState extends State<LeaveGroupPageWidget> {
           child: ElevatedButton(
             onPressed: () {
               if (leaveCheck) {
-                Alert.confirmDialog(
-                    context, "", "$groupName을(를) 정말로 나갈까요?", "책방 나가기", () =>
-                {
+                Alert.confirmDialog("", "$groupName을(를) 정말로 나갈까요?", "책방 나가기", () => {
                   leaveAction()
                 });
               }
@@ -195,9 +193,7 @@ class _LeaveGroupPageWidgetState extends State<LeaveGroupPageWidget> {
   void leaveAction() {
     try {
       GroupService.leaveGroup(groupId);
-      Alert.alertActionDialog(
-          context, "책방 나가기 완료", "책방 나가기가 완료되었어요!\n다시 또 놀러오세요!", () =>
-      {
+      Alert.alertActionDialog("책방 나가기 완료", "책방 나가기가 완료되었어요!\n다시 또 놀러오세요!", () => {
         movePage()
       });
     } catch (err) {

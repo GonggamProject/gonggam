@@ -1,9 +1,6 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../common/constants.dart';
-import '../common/notification.dart';
 import 'login_page.dart';
 
 
@@ -43,7 +40,7 @@ class _WalkthroughtWidgetState extends State<WalkthroughtWidget>{
             children: [
               Expanded(
                 child: PageView(
-                    physics: const ClampingScrollPhysics(), // 첫 페이지에서만 오른쪽 스와이프 비활성화
+                    physics: const ClampingScrollPhysics(),
                     scrollDirection: Axis.horizontal,
                     controller: _controller,
                     onPageChanged: (value) {

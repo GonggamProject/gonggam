@@ -134,7 +134,7 @@ class _SecessionPageWidgetState extends State<SecessionPageWidget> {
               if(secessionCheck) {
                 try {
                   CustomerService().secession();
-                  Alert.alertActionDialog(context, "공감책방 탈퇴 완료", "다음에 또 공감책방을 이용해주세요!", () => {
+                  Alert.alertActionDialog("공감책방 탈퇴 완료", "다음에 또 공감책방을 이용해주세요!", () => {
                     Get.offAll(const SplashWidget())
                   });
                 } catch (err) {

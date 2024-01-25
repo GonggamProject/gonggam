@@ -1,10 +1,13 @@
 import 'dart:convert';
 
+import 'package:get/get.dart';
 import 'package:gonggam/common/http/http_client.dart';
 import 'package:gonggam/common/prefs.dart';
 import 'package:gonggam/domain/common/response.dart' as gonggam_response;
+import 'package:gonggam/ui/create_nickname_page.dart';
 
 import '../../domain/customer/customer_info.dart';
+import '../../ui/common/alert.dart';
 import '../auth/auth_factory.dart';
 
 class CustomerService {
@@ -18,6 +21,10 @@ class CustomerService {
 
     if (res.code == "GG1001") {
       AuthFactory.createAuthService(Prefs.currentLoginedPlatform()).logout();
+    }
+
+    if (res.content!.nickname.isEmpty) {
+      Alert.alertActionDialog("", "닉네임 입력이 필요해요!\n닉네임 입력을 진행해주세요!", () => Get.to(const CreateNicknameWidget()));
     }
 
     return res.content!;

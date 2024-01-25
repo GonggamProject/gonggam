@@ -21,6 +21,7 @@ import '../controller/group_controller.dart';
 import '../domain/group/group.dart';
 import '../domain/group/groups.dart';
 import '../main.dart';
+import '../service/auth/auth_factory.dart';
 import '../service/group/group_service.dart';
 import '../utils.dart';
 import 'bookstore/bookstore_main.dart';
@@ -55,23 +56,24 @@ class _SplashWidgetState extends State<SplashWidget> {
       return;
     }
 
-    String? token = await FirebaseMessaging.instance.getToken();
-    print("FCM 토큰 - ${token!}");
-
     if(Prefs.isLogined()) {
-      Groups groups = await GroupService.getGroupList();
-      if(groups.groups.isNotEmpty) {
-        if(!Get.isRegistered<GroupController>()) {
+      try {
+        Groups groups = await GroupService.getGroupList();
+        if(groups.groups.isNotEmpty) {
+          if(!Get.isRegistered<GroupController>()) {
 
-          Group? group = groups.groups.firstWhereOrNull((element) => element.isRepresentation);
-          group ??= groups.groups.first;
-          Get.put(GroupController(groups, group.copyWith()), permanent: true);
+            Group? group = groups.groups.firstWhereOrNull((element) => element.isRepresentation);
+            group ??= groups.groups.first;
+            Get.put(GroupController(groups, group.copyWith()), permanent: true);
+          }
+          Get.off(const BookStoreMainWidget(), transition: Transition.fadeIn,
+              duration: const Duration(milliseconds: 1500));
+        } else {
+          Get.off(const CreateBookStoreMainWidget(), transition: Transition.fadeIn,
+              duration: const Duration(milliseconds: 1500));
         }
-        Get.off(const BookStoreMainWidget(), transition: Transition.fadeIn,
-            duration: const Duration(milliseconds: 1500));
-      } else {
-        Get.off(const CreateBookStoreMainWidget(), transition: Transition.fadeIn,
-            duration: const Duration(milliseconds: 1500));
+      } catch (e) {
+        AuthFactory.createAuthService(Prefs.currentLoginedPlatform()).logout();
       }
     } else {
       Get.off(const WalkthroughtWidget(), transition: Transition.fadeIn,

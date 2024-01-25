@@ -109,7 +109,7 @@ class _SettingPageWidgetState extends State<SettingPageWidget> {
                   child: InkWell(
                     onTap: () => {
                       if (groupController == null || groupController!.groups.groups.isEmpty) {
-                        Alert.confirmDialog(context, "", "이용중인 책방이 없어요.\n책방을 새로 만들까요?", "책방 만들기", () => {
+                        Alert.confirmDialog("", "이용중인 책방이 없어요.\n책방을 새로 만들까요?", "책방 만들기", () => {
                           Get.to(const CreateBookStoreNameWidget())
                         })
                       } else {

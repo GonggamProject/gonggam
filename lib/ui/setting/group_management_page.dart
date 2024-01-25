@@ -212,7 +212,7 @@ class _GroupManagementPageWidgetState extends State<GroupManagementPageWidget> {
   }
 
   void changeRepresentGroup(Group group) {
-    Alert.confirmDialog(context, "", "아래 책방을 대표책방으로 변경할까요?\n${group.name}", "변경", () async {
+    Alert.confirmDialog("", "아래 책방을 대표책방으로 변경할까요?\n${group.name}", "변경", () async {
       await GroupService.changeRepresentation(group.id);
       await GroupService.getGroupList();
       setState(() {
@@ -322,7 +322,7 @@ class _GroupManagementPageWidgetState extends State<GroupManagementPageWidget> {
                           height: 60,
                           child: ElevatedButton(onPressed: () {
                             Navigator.pop(context);
-                            Alert.confirmDialog(context, "", "책방이름을 $groupName(으)로 수정할까요?", "수정하기", () {
+                            Alert.confirmDialog("", "책방이름을 $groupName(으)로 수정할까요?", "수정하기", () {
                               try {
                                 GroupService.groupNameChange(groupId, groupName).then((value) {
                                   callback();

@@ -3,7 +3,7 @@ import 'package:gonggam/ui/common/alert.dart';
 
 class CustomLogInterceptor extends Interceptor {
 
-  List<String> skipErrCode = ["GG3003"];
+  List<String> skipErrCode = ["GG3003","GG3004"];
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
