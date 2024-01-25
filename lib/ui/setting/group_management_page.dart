@@ -104,14 +104,14 @@ class _GroupManagementPageWidgetState extends State<GroupManagementPageWidget> {
                             const SizedBox(width: 10,),
                             Text(group.name, style: const TextStyle(fontFamily: FONT_APPLESD, fontSize: 15, fontWeight: FontWeight.bold),),
                             const SizedBox(width: 5,),
-                            InkWell(
+                            isOwner ? InkWell(
                               child: const Icon(Icons.edit, size: 15, color: COLOR_SUB,),
                               onTap: () => {
                                 changeGroupNameModal(context, group.id, group.name, () {
                                   setState(() {
                                   });
                                 })
-                            },)
+                            },) : const SizedBox.shrink()
                           ],),
                           group.isRepresentation ? const Icon(Icons.star_rate_rounded, size: 25,) :
                           GestureDetector(
@@ -315,7 +315,7 @@ class _GroupManagementPageWidgetState extends State<GroupManagementPageWidget> {
                           ),
                         ),
                         const SizedBox(height: 10,),
-                        const Text("닉네임은 최대 10자까지 작성할 수 있어요.", style: TextStyle(fontFamily: FONT_APPLESD, fontSize: 12, color: Colors.blue),),
+                        const Text("책방이름은 최대 10자까지 작성할 수 있어요.", style: TextStyle(fontFamily: FONT_APPLESD, fontSize: 12, color: Colors.blue),),
                         const SizedBox(height: 10,),
                         SizedBox(
                           width: double.infinity,

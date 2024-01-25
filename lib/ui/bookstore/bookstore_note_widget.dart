@@ -262,6 +262,9 @@ Widget getBeforeWriteOtherNoteWithButton(String nickname) {
                   style: TextStyle(
                       fontFamily: FONT_APPLESD, fontSize: 15, color: COLOR_GRAY),
                 ),
+                const SizedBox(
+                  height: 30,
+                ),
                 const Text(
                   "감사일기 작성하기",
                   style: TextStyle(

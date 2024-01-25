@@ -63,6 +63,7 @@ void main() async {
         ],
         theme: ThemeData(
           checkboxTheme: const CheckboxThemeData(splashRadius: 0),
+          primarySwatch: Colors.blue,
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,
         ),

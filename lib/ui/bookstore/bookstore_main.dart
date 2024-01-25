@@ -99,12 +99,20 @@ class _BookStoreMainWidgetState extends State<BookStoreMainWidget> {
                     onPressed: () {
                       Utils.isAfterCreateAt(groupController.group.createdAt, _currentPageIndex - 365) ? _changePage(-1) : null;
                     },
-                    style: ElevatedButton.styleFrom(
-                        foregroundColor: Utils.isAfterCreateAt(groupController.group.createdAt, _currentPageIndex - 365)
+                    style: ButtonStyle(
+                      foregroundColor: MaterialStateProperty.all<Color>(
+                        Utils.isAfterCreateAt(groupController.group.createdAt, _currentPageIndex - 365)
                             ? Colors.black
                             : COLOR_GRAY,
-                        backgroundColor: Colors.transparent,
-                        shadowColor: Colors.transparent),
+                      ),
+                      backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
+                      shadowColor: MaterialStateProperty.all<Color>(Colors.transparent),
+                      overlayColor: MaterialStateProperty.resolveWith<Color>(
+                            (Set<MaterialState> states) {
+                          return Colors.transparent;
+                        },
+                      ),
+                    ),
                     child: const Icon(Icons.keyboard_arrow_left),
                   ),
                   const SizedBox(width: 5),
@@ -115,12 +123,20 @@ class _BookStoreMainWidgetState extends State<BookStoreMainWidget> {
                     onPressed: () {
                       _currentPageIndex - 365 >= 0 ? null : _changePage(1);
                     },
-                    style: ElevatedButton.styleFrom(
-                        foregroundColor: _currentPageIndex - 365 >= 0
-                            ? COLOR_GRAY
-                            : Colors.black,
-                        backgroundColor: Colors.transparent,
-                        shadowColor: Colors.transparent),
+                    style: ButtonStyle(
+                      foregroundColor: MaterialStateProperty.all<Color>(
+                        _currentPageIndex - 365 >= 0
+                            ? Colors.black
+                            : COLOR_GRAY,
+                      ),
+                      backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
+                      shadowColor: MaterialStateProperty.all<Color>(Colors.transparent),
+                      overlayColor: MaterialStateProperty.resolveWith<Color>(
+                            (Set<MaterialState> states) {
+                          return Colors.transparent;
+                        },
+                      ),
+                    ),
                     child: const Icon(Icons.keyboard_arrow_right),
                   ),
                 ],
