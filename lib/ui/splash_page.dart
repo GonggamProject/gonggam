@@ -66,7 +66,7 @@ class _SplashWidgetState extends State<SplashWidget> {
             group ??= groups.groups.first;
             Get.put(GroupController(groups, group.copyWith()), permanent: true);
           }
-          Get.off(const BookStoreMainWidget(), transition: Transition.fadeIn,
+          Get.off(const BookStoreMainWidget(), arguments: {"isRefresh": false}, transition: Transition.fadeIn,
               duration: const Duration(milliseconds: 1500));
         } else {
           Get.off(const CreateBookStoreMainWidget(), transition: Transition.fadeIn,

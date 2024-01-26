@@ -24,9 +24,9 @@ class _BookStoreMainWidgetState extends State<BookStoreMainWidget> {
 
   String customerId = Prefs.getCustomerId();
   int _currentPageIndex = 365;
-  final PageController _pageController = PageController(initialPage: 365);
+  PageController _pageController = PageController(initialPage: 365);
 
-  bool isRefreseh = Get.arguments ?? false;
+  bool isRefreseh = Get.arguments["isRefresh"] ?? false;
 
   Future<List<Widget>>? _future;
 
@@ -39,6 +39,12 @@ class _BookStoreMainWidgetState extends State<BookStoreMainWidget> {
 
     if(isRefreseh) {
       setState(() {
+        if(Get.arguments["currentDateState"] != null) {
+          _currentPageIndex = Get.arguments["currentDateState"];
+          _currentPageIndex = 365 + _currentPageIndex;
+
+          _pageController = PageController(initialPage: _currentPageIndex);
+        }
       });
     }
   }

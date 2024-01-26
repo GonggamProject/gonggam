@@ -6,7 +6,8 @@ const IMAGE_PATH = "assets/images";
 const FONT_SFPRO = "SF Pro";
 const FONT_NANUMMYNGJO = "Nanum Myngjo";
 const FONT_APPLESD = "Apple SD Gothic Neo";
-const FONT_BODONI = "Bodoni";
+const FONT_BODONI_BOLD = "Bodoni Bold";
+const FONT_BODONI_BOOK = "Bodoni Book";
 
 //TODO 이거 정확하게 어떻게 동작하는지 봐야겠다. safearea가 있는 애들한테만 이게 먹혔으면함
 const PADDING_MINIMUM_SAFEAREA = EdgeInsets.fromLTRB(27, 0, 27, 0);

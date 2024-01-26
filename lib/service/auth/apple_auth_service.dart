@@ -62,7 +62,7 @@ class AppleAuthService implements AuthInterface {
           group ??= groups.groups.first;
           Get.put(GroupController(groups, group!.copyWith()), permanent: true);
         }
-        Get.off(groups.groups.isEmpty ? const CreateBookStoreMainWidget() : const BookStoreMainWidget());
+        Get.off(groups.groups.isEmpty ? const CreateBookStoreMainWidget() : const BookStoreMainWidget(), arguments: {"isRefresh": false});
       }
     }
   }

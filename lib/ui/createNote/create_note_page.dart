@@ -170,7 +170,7 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
             if (isAllNoteWrited()) {
               NoteService.postNoteList(groupController.group.id, Utils.formatDate("yyyyMMdd", currentDateState), noteDataList, isEditMode).then((value) {
                 showAd();
-                Navigator.push( context, MaterialPageRoute( builder: (context) => const BookStoreMainWidget()), ).then((value) => setState(() {}));
+                Get.off(const BookStoreMainWidget(), arguments: {"isRefresh": true, "currentDateState": currentDateState});
               });
             }
           },

@@ -39,7 +39,7 @@ class _InvitedPageState extends State<InvitedPage> {
         GroupController groupController = Get.find<GroupController>();
         groupController.setGroup(groups.groups.firstWhere((element) => element.id == inviteController.groupId).copyWith());
       }
-      Get.off(const BookStoreMainWidget());
+      Get.off(const BookStoreMainWidget(), arguments: {"isRefresh": false});
     }
   }
 

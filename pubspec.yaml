@@ -106,9 +106,11 @@ flutter:
     - family: Nanum Myngjo
       fonts:
         - asset: assets/fonts/NanumMyeongjo/NanumMyeongjo-Regular.ttf
-    - family: Bodoni
+    - family: Bodoni Bold
       fonts:
         - asset: assets/fonts/Bodoni/Bodoni-11-Bold.otf
+    - family: Bodoni Book
+      fonts:
         - asset: assets/fonts/Bodoni/Bodoni-11-Book.otf
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

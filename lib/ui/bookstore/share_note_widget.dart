@@ -27,7 +27,6 @@ class _ShareNoteWidgetState extends State<ShareNoteWidget>{
   }
 
   void setNewImage() {
-    FirebaseMessaging.instance.getAPNSToken().then((value) => print(value));
     _screenshotController.captureFromLongWidget(page3(), constraints: const BoxConstraints(
         maxHeight: 1920, minHeight: 1920, maxWidth: 1080, minWidth: 1080),).then((value) {
       image1 = value;
@@ -39,7 +38,7 @@ class _ShareNoteWidgetState extends State<ShareNoteWidget>{
   @override
   Widget build(BuildContext context) {
 
-    List<Widget> pageWidgets = [page3(), page1()];
+    List<Widget> pageWidgets = [page1(), page1()];
     int lastIndex = pageWidgets.length - 1;
 
     return Scaffold(
@@ -144,7 +143,7 @@ class _ShareNoteWidgetState extends State<ShareNoteWidget>{
   }
 
   Widget page1() {
-    return image1.isEmpty ? Image.asset("$IMAGE_PATH/download_icon.png") : Image.memory(image1);
+    return image1.isEmpty ? const Center(child: CircularProgressIndicator()) : Image.memory(image1);
   }
 
   Widget page3() {
@@ -155,18 +154,46 @@ class _ShareNoteWidgetState extends State<ShareNoteWidget>{
           height: 1920,
           child: Stack(
             children: [
-            Align(
-              child: Image.asset("$IMAGE_PATH/feed1.png",width: 1080, height: 1920, fit: BoxFit.fitWidth,),
-            ),
-            Align(
-              alignment: Alignment.topCenter,
-              child: Padding(
-                padding: EdgeInsets.only(top: 28),
-                child: Text("30", style: TextStyle(fontSize: 500, fontFamily: FONT_BODONI, fontWeight: FontWeight.bold, color: Colors.red),),
-              )
-            ),
-              Positioned(left:0,child: Text("박장님 김루시 박마손", style: TextStyle(color: Colors.yellow, fontFamily: FONT_NANUMMYNGJO, fontSize: 40,),),)
+              Align(
+                child: Image.asset("$IMAGE_PATH/feed1.png",width: 1080, height: 1920, fit: BoxFit.fitWidth,),
+              ),
+              const Align(
+                alignment: Alignment.topCenter,
+                child: Padding(
+                  padding: EdgeInsets.only(top: 24),
+                  child: Text("30", style: TextStyle(fontSize: 500, fontFamily: FONT_BODONI_BOLD, fontWeight: FontWeight.bold, color: Colors.red, letterSpacing: -20),),
+                )
+              ),
+              Positioned(
+                  top: 666,
+                  left: 252,
+                  child: Text("2024", style: TextStyle(fontSize: 53, fontFamily: FONT_BODONI_BOOK, color: Colors.red, letterSpacing: -1.5),)
+              ),
+              Positioned(
+                  top: 666,
+                  left: 470,
+                  child: Text("January", style: TextStyle(fontSize: 53, fontFamily: FONT_BODONI_BOOK, color: Colors.red, letterSpacing: -1.5),)
+              ),
+              Positioned(
+                  top: 666,
+                  left: 756,
+                  child: Text("Fri.", style: TextStyle(fontSize: 53, fontFamily: FONT_BODONI_BOOK, color: Colors.red, letterSpacing: -1.5),)
+              ),
+              getPage1Section()
           ],),
+        )
+    );
+  }
+
+  Widget getPage1Section() {
+    return  Positioned(
+        top: 666,
+        left: 756,
+        child: Row(
+          children: [
+            Text("1.", style: TextStyle(fontSize: 53, fontFamily: FONT_BODONI_BOOK, color: Colors.red, letterSpacing: -1.5),),
+            Text("동해물과백두산이마르고닳도록하나님이보우하사우리나라만세무궁화삼천리화려강산대한사람대한으", style: TextStyle(fontSize: 53, fontFamily: FONT_BODONI_BOOK, color: Colors.red, letterSpacing: -1.5),)
+          ],
         )
     );
   }

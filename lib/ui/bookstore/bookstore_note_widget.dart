@@ -421,7 +421,7 @@ Future showSettingModal(BuildContext context, int currentDateState, int groupId,
                         Alert.confirmDialog("${Utils.formatDate("yyyy.MM.dd", currentDateState)} 감사일기를 삭제할까요?",
                             "삭제하면 복구 할 수 없어요!\n신중하게 선택해주세요.", "감사일기삭제", () {
                               NoteService.deleteNote(Utils.formatDate("yyyyMMdd", currentDateState), groupId).then((value) => {
-                                Get.off(const BookStoreMainWidget(), arguments: true)
+                                Get.off(const BookStoreMainWidget(), arguments: {"isRefresh": true})
                               });
                         });
                       },

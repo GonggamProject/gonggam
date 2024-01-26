@@ -32,7 +32,7 @@ Widget getBottomNavigationBar(BuildContext context, GroupController? groupContro
             icon: Image.asset(Prefs.getCurrentNavIndex() == 0 ? "$IMAGE_PATH/bottom_home_active_icon.png" : "$IMAGE_PATH/bottom_home_icon.png", width: 26, height: 26,),
             onPressed: () {
                Prefs.setCurrentNavIndex(0);
-               Get.off(groupController != null && groupController!.groups.groups.isNotEmpty ? const BookStoreMainWidget() : const CreateBookStoreMainWidget(), duration: const Duration(seconds: 0));
+               Get.off(groupController != null && groupController!.groups.groups.isNotEmpty ? const BookStoreMainWidget() : const CreateBookStoreMainWidget(), duration: const Duration(seconds: 0), arguments: {"isRefresh": false});
             },
           ),
           IconButton(

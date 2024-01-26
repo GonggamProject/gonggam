@@ -24,7 +24,7 @@ Future<List<Widget>> getBottomNoteList(int groupId, String customerId, Function(
   // logo
   widgets.add(
       Positioned(
-          left: 52.0 * groupLength,
+          left: groupLength == 6 ? 52 * 5 : 52.0 * groupLength,
           bottom: -10,
           child: Image.asset(
             "$IMAGE_PATH/book_list_logo.png",
@@ -45,34 +45,37 @@ List<Widget> buildNoteWidgets(int groupId, List<Member> members, String customer
   }).toList();
 
   // 초대하기 버튼
-  widgets.add(
-      GestureDetector(
-        onTap: () => {
-          Get.to(const InvitePage())
-        },
-        child: RotatedBox(
-            quarterTurns: 1,
-            child: Container(
-              margin: const EdgeInsets.only(top: 3.0),
-              constraints: const BoxConstraints(
-                  minWidth: 100,
-                  maxWidth: 200
-              ),
-              height: 50,
-              decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      bottomLeft: Radius.circular(10)
-                  ),
-                  color: COLOR_BOOKS[4]
-              ),
-              padding: const EdgeInsets.all(15),
-              child: const RotatedBox(quarterTurns: -1, child: Text(
-                '+ 초대하기', textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white),),),
-            )),
-      )
-  );
+  if (members.length < 5) {
+    widgets.add(
+        GestureDetector(
+          onTap: () =>
+          {
+            Get.to(const InvitePage())
+          },
+          child: RotatedBox(
+              quarterTurns: 1,
+              child: Container(
+                margin: const EdgeInsets.only(top: 3.0),
+                constraints: const BoxConstraints(
+                    minWidth: 100,
+                    maxWidth: 200
+                ),
+                height: 50,
+                decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        bottomLeft: Radius.circular(10)
+                    ),
+                    color: COLOR_BOOKS[4]
+                ),
+                padding: const EdgeInsets.all(15),
+                child: const RotatedBox(quarterTurns: -1, child: Text(
+                  '+ 초대하기', textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white),),),
+              )),
+        )
+    );
+  }
   return widgets;
 }
 
