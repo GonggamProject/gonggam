@@ -21,29 +21,15 @@ class CreateNoteWidget extends StatefulWidget {
   State<CreateNoteWidget> createState() => _CreateNoteWidgetState();
 }
 
-class NoteData extends LinkedListEntry<NoteData> {
-  final controller = TextEditingController();
-
-  NoteData();
-
-  NoteData.edit(Note note) {
-    controller.text = note.content;
-    noteId = note.noteId!;
-  }
-
-  String getNoteText() => controller.text;
-  int getNoteTextLength() => controller.text.characters.length;
-  late int? noteId = null;
-  late double textFieldHight = 99.0;
-}
-
 class _CreateNoteWidgetState extends State<CreateNoteWidget> {
   final GroupController groupController = Get.find<GroupController>();
   final int currentDateState = Get.arguments ?? 0;
   late int groupId = groupController.group.id;
   late bool isEditMode = false;
   final noteDataList = LinkedList<NoteData>();
+  final ScrollController _scrollController = ScrollController();
 
+  final List<FocusNode> _focusNodes = [FocusNode()];
 
   @override
   void initState() {
@@ -125,6 +111,7 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
               ),
               Expanded(
                 child: SingleChildScrollView(
+                  controller: _scrollController,
                   child: Stack(
                     children: [
                       Positioned(
@@ -158,35 +145,44 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
                   ),
                 ),
               ),
+              SizedBox(
+                height: MediaQuery.of(context).viewInsets.bottom > 0 ? 62 : 92,
+              ),
             ],
           ),
       ),
-      bottomNavigationBar: Container(
-        margin: const EdgeInsets.only(left: 30, right: 30, bottom: 32),
-        width: double.infinity,
-        height: 60,
-        child: ElevatedButton(
-          onPressed: () {
-            if (isAllNoteWrited()) {
-              NoteService.postNoteList(groupController.group.id, Utils.formatDate("yyyyMMdd", currentDateState), noteDataList, isEditMode).then((value) {
-                showAd();
-                Get.off(const BookStoreMainWidget(), arguments: {"isRefresh": true, "currentDateState": currentDateState});
-              });
-            }
-          },
-          style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-                side: BorderSide(color: isAllNoteWrited() ? COLOR_BOOK5 : const Color(0xFFCDCDCD))),
-            backgroundColor: isAllNoteWrited() ? COLOR_BOOK5 : const Color(0xFFCDCDCD),
-            shadowColor: Colors.transparent,
-          ),
-          child: const Text(
-            "작성완료",
-            style: TextStyle(
-                fontFamily: FONT_APPLESD,
-                fontSize: 18,
-                color: Colors.white),
+      bottomSheet: Container(
+        color: Colors.white,
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.height * 0.8, // 조절 가능한 높이
+        ),
+        child: Container(
+          margin: EdgeInsets.only(left: 30, right: 30, bottom: MediaQuery.of(context).viewInsets.bottom > 0 ? 0 : 32),
+          width: double.infinity,
+          height: 60,
+          child: ElevatedButton(
+            onPressed: () {
+              if (isAllNoteWrited()) {
+                NoteService.postNoteList(groupController.group.id, Utils.formatDate("yyyyMMdd", currentDateState), noteDataList, isEditMode).then((value) {
+                  showAd();
+                  Get.off(const BookStoreMainWidget(), arguments: {"isRefresh": true, "currentDateState": currentDateState});
+                });
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  side: BorderSide(color: isAllNoteWrited() ? COLOR_BOOK5 : const Color(0xFFCDCDCD))),
+              backgroundColor: isAllNoteWrited() ? COLOR_BOOK5 : const Color(0xFFCDCDCD),
+              shadowColor: Colors.transparent,
+            ),
+            child: const Text(
+              "작성완료",
+              style: TextStyle(
+                  fontFamily: FONT_APPLESD,
+                  fontSize: 18,
+                  color: Colors.white),
+            ),
           ),
         ),
       )
@@ -251,6 +247,7 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
           child: SizedBox(
             height: data.textFieldHight,
             child: TextField(
+              focusNode: _focusNodes[index],
               controller: data.controller,
               keyboardType: TextInputType.multiline,
               maxLength: 45,
@@ -296,10 +293,6 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
             height: 55,
             width: 50,
             child: TextButton(
-              // style: TextButton.styleFrom(
-              //   padding: EdgeInsets.fromLTRB(18, 10, 10, 30),
-              //   textStyle: const TextStyle(fontSize: 12),
-              // ),
               style: ButtonStyle(
                 textStyle: MaterialStateProperty.resolveWith((states) =>
                 const TextStyle(
@@ -313,6 +306,7 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
               onPressed: () {
                 setState(() {
                     noteDataList.elementAt(index).unlink();
+                    _focusNodes.removeAt(index);
                 });
               },
               child: const Text(
@@ -342,7 +336,16 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
           child: ElevatedButton(
             onPressed: () {
               setState(() {
+                _focusNodes.add(FocusNode());
                 noteDataList.add(NoteData());
+                _scrollController.animateTo(
+                  _scrollController.position.maxScrollExtent + MediaQuery.of(context).viewInsets.bottom + 50,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.easeInOut,);
+              });
+
+              Future.delayed(const Duration(milliseconds: 500), () {
+                FocusScope.of(context).requestFocus(_focusNodes.last);
               });
             },
             style: ElevatedButton.styleFrom(
@@ -376,3 +379,20 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
     return newHeight < 99 ? 99 : newHeight;
   }
 }
+
+class NoteData extends LinkedListEntry<NoteData> {
+  final controller = TextEditingController();
+
+  NoteData();
+
+  NoteData.edit(Note note) {
+    controller.text = note.content;
+    noteId = note.noteId!;
+  }
+
+  String getNoteText() => controller.text;
+  int getNoteTextLength() => controller.text.characters.length;
+  late int? noteId = null;
+  late double textFieldHight = 99.0;
+}
+
