@@ -40,13 +40,15 @@ class _SplashWidgetState extends State<SplashWidget> {
   bool canUpdate = false;
   Uri? scheme;
 
+  late Timer t;
+
   @override
   void initState() {
     loadAd();
     _incomingLinkHandler();
     _initURIHandler();
 
-    Timer(const Duration(milliseconds: 1500), navigateToNextScreen);
+    t = Timer(const Duration(milliseconds: 1500), navigateToNextScreen);
   }
 
   void navigateToNextScreen() async {
@@ -120,6 +122,8 @@ class _SplashWidgetState extends State<SplashWidget> {
   }
 
   void schemeProcessor(Uri uri) {
+    t.cancel();
+
     String? type = uri.queryParameters['type'];
     if (type != 'invite') {
       return;
