@@ -178,7 +178,7 @@ class _BookStoreMainWidgetState extends State<BookStoreMainWidget> {
             ],
           ),
         ),
-        bottomNavigationBar: getBottomNavigationBar(context, groupController));
+        bottomNavigationBar: getBottomNavigationBar(context, groupController, 0));
   }
 
   Widget _buildPage(int index) {

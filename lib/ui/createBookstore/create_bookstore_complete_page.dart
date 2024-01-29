@@ -153,7 +153,7 @@ class _CreateBookStoreCompleteWidgetState extends State<CreateBookStoreCompleteW
                 )
               ],)
         ),
-        bottomNavigationBar: getBottomNavigationBar(context, groupController)
+        bottomNavigationBar: getBottomNavigationBar(context, groupController, 0)
     );
   }
 }

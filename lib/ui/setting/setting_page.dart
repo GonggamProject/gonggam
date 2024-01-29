@@ -210,7 +210,7 @@ class _SettingPageWidgetState extends State<SettingPageWidget> {
               ],
             ),
           )),
-        bottomNavigationBar: getBottomNavigationBar(context, Get.isRegistered<GroupController>() ? Get.find<GroupController>() : null)
+        bottomNavigationBar: getBottomNavigationBar(context, Get.isRegistered<GroupController>() ? Get.find<GroupController>() : null, 2)
     );
   }
 

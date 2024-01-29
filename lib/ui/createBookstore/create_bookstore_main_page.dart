@@ -65,7 +65,7 @@ class _CreateBookStoreMainWidgetState extends State<CreateBookStoreMainWidget> {
             ],
             )
         ),
-        bottomNavigationBar: getBottomNavigationBar(context, Get.isRegistered<GroupController>() ? Get.find<GroupController>() : null)
+        bottomNavigationBar: getBottomNavigationBar(context, Get.isRegistered<GroupController>() ? Get.find<GroupController>() : null, 0)
     );
   }
 }

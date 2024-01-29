@@ -28,8 +28,6 @@ class Prefs {
   // sets
   static Future<bool> setCustomerName(String customerName) => setString("customerName", customerName);
 
-  static Future<bool> setCurrentNavIndex(int index) => setInt("currentNavIndex", index);
-
   // gets
   static bool isLogined() => _prefs.getBool("isLogin") ?? false;
 
@@ -38,8 +36,6 @@ class Prefs {
   static String getCustomerId() => _prefs.getString("customerId") ?? "";
 
   static String getCustomerName() => _prefs.getString("customerName") ?? "테스트이름";
-
-  static int getCurrentNavIndex() => _prefs.getInt("currentNavIndex") ?? 0;
 
   // clear
   static Future<bool> remove(String key) async => await _prefs.remove(key);
