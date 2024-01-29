@@ -117,7 +117,9 @@ class _MemberManagementPageWidgetState extends State<MemberManagementPageWidget>
                   Alert.confirmDialog("${member.nickname}을 내보낼까요?", "내보내면 ${member.nickname}님의\n글은 삭제됩니다.", "내보내기", () => {
                     GroupService.kickOutMember(group.id, member.customerId)
                   });
-                  setState(() {});
+                  setState(() {
+                    group.members.removeWhere((element) => element.customerId == member.customerId);
+                  });
                 },
                 child: Container(
                   width: 50,
