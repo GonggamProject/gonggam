@@ -26,7 +26,7 @@ class _BookStoreMainWidgetState extends State<BookStoreMainWidget> {
   int _currentPageIndex = 365;
   PageController _pageController = PageController(initialPage: 365);
 
-  bool isRefreseh = Get.arguments["isRefresh"] ?? false;
+  bool isRefresh = Get.arguments["isRefresh"] ?? false;
 
   Future<List<Widget>>? _future;
 
@@ -37,7 +37,7 @@ class _BookStoreMainWidgetState extends State<BookStoreMainWidget> {
     _future = getBottomNoteList(selectedGroupId, customerId, _changeCustomerId);
     groupController.setGroup(groupController.groups.groups.firstWhere((element) => element.id == selectedGroupId).copyWith());
 
-    if(isRefreseh) {
+    if(isRefresh) {
       setState(() {
         if(Get.arguments["currentDateState"] != null) {
           _currentPageIndex = Get.arguments["currentDateState"];
@@ -132,8 +132,8 @@ class _BookStoreMainWidgetState extends State<BookStoreMainWidget> {
                     style: ButtonStyle(
                       foregroundColor: MaterialStateProperty.all<Color>(
                         _currentPageIndex - 365 >= 0
-                            ? Colors.black
-                            : COLOR_GRAY,
+                            ? COLOR_GRAY
+                            : Colors.black,
                       ),
                       backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
                       shadowColor: MaterialStateProperty.all<Color>(Colors.transparent),

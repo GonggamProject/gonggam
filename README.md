@@ -19,4 +19,18 @@ samples, guidance on mobile development, and a full API reference.
 ## Get android key tool
 keytool -exportcery -alias upload -keystore upload-keystore.jks | openssl sha1 -binary | openssl base64
 
+## dto change
 flutter pub run build_runner build
+
+## ios build error
+sudo arch -x86_64 gem install ffi                                                                                                                         
+cd ios
+rm -rf build
+rm -rf Pods
+rm -rf Podfile.lock
+rm -rf ~/.pub-cache/hosted/pub.dartlang.org
+pod cache clean --all
+flutter clean
+flutter pub get
+arch -x86_64 pod repo update
+arch -x86_64 pod install
