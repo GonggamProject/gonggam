@@ -21,8 +21,10 @@ Widget noteFactory(BuildContext context, int currentDateState, String customerId
   try {
     writerName = groupController.group.members.firstWhere((element) => element.customerId == customerId).nickname;
   } catch (e) {
-    GroupService.getGroupList();
-    writerName = groupController.group.members.firstWhere((element) => element.customerId == customerId).nickname;
+    GroupService.getGroupList().then((value) {
+      writerName = value.groups.firstWhere((element) => element.id == groupController.group.id).members.firstWhere((element) => element.customerId == customerId).nickname;
+      groupController.setGroupById(groupController.group.id);
+    });
   }
 
   return FutureBuilder(

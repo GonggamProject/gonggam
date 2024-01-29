@@ -22,6 +22,10 @@ class GroupController extends GetxController {
     this.group = group;
   }
 
+  void setGroupById(int groupId) {
+    group = groups.groups.firstWhere((element) => element.id == groupId).copyWith();
+  }
+
   void resetGroup() {
     group = groups.groups.first;
   }
