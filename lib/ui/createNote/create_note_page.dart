@@ -29,7 +29,7 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
   final noteDataList = LinkedList<NoteData>();
   final ScrollController _scrollController = ScrollController();
 
-  final List<FocusNode> _focusNodes = [FocusNode()];
+  final List<FocusNode> _focusNodes = [];
 
   @override
   void initState() {
@@ -41,10 +41,12 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
     gonggam_response.Response<Notes> noteRes = await NoteService.getNoteList(null, groupId, Utils.formatDate("yyyyMMdd", currentDateState));
     List<Note> noteList = noteRes.content!.list;
     if (noteList.isEmpty) {
+      _focusNodes.add(FocusNode());
       noteDataList.add(NoteData());
     } else {
       isEditMode = true;
       for (var note in noteList) {
+        _focusNodes.add(FocusNode());
         noteDataList.add(NoteData.edit(note));
       }
     }
@@ -111,6 +113,7 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
               ),
               Expanded(
                 child: SingleChildScrollView(
+                  physics: const ClampingScrollPhysics(),
                   controller: _scrollController,
                   child: Stack(
                     children: [
@@ -157,7 +160,7 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
           maxHeight: MediaQuery.of(context).size.height * 0.8, // 조절 가능한 높이
         ),
         child: Container(
-          margin: EdgeInsets.only(left: 30, right: 30, bottom: MediaQuery.of(context).viewInsets.bottom > 0 ? 0 : 32),
+          margin: const EdgeInsets.only(left: 30, right: 30, bottom: 32),//bottom: MediaQuery.of(context).viewInsets.bottom > 0 ? 0 : 32),
           width: double.infinity,
           height: 60,
           child: ElevatedButton(
@@ -231,7 +234,7 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
     ));
 
     if (noteDataList.length == MAX_NOTE_COUNT) {
-      widgets.add(const SizedBox(height: 25));
+      widgets.add(const SizedBox(height: 35));
     }
 
     return widgets;
@@ -249,9 +252,9 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
             child: TextField(
               focusNode: _focusNodes[index],
               controller: data.controller,
-              keyboardType: TextInputType.multiline,
+              keyboardType: TextInputType.text,
               maxLength: 45,
-              maxLines: 20,
+              maxLines: 2,
               decoration: InputDecoration(
                   counterText: "",
                   contentPadding: const EdgeInsets.fromLTRB(20, 20, 65, 40),
@@ -338,14 +341,14 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
               setState(() {
                 _focusNodes.add(FocusNode());
                 noteDataList.add(NoteData());
+              });
+
+              Future.delayed(const Duration(milliseconds: 10), () {
+                FocusScope.of(context).requestFocus(_focusNodes.last);
                 _scrollController.animateTo(
                   _scrollController.position.maxScrollExtent + MediaQuery.of(context).viewInsets.bottom + 50,
                   duration: const Duration(milliseconds: 500),
-                  curve: Curves.easeInOut,);
-              });
-
-              Future.delayed(const Duration(milliseconds: 500), () {
-                FocusScope.of(context).requestFocus(_focusNodes.last);
+                  curve: Curves.linear,);
               });
             },
             style: ElevatedButton.styleFrom(

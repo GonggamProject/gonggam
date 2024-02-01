@@ -250,6 +250,7 @@ Widget getBeforeWriteOtherNoteWithButton(String nickname) {
             height: 138,
             width: 292,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   "$nickname님이",
@@ -307,18 +308,34 @@ List<Widget> getNoteWidgets(BuildContext context, List<Note> noteData, String wr
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
       Text("written by $writerName"),
-      customerId == Prefs.getCustomerId() ?
-      SizedBox(
-        width: 21,
-        height: 21,
-        child: IconButton(
-          padding: EdgeInsets.zero,
-          icon: Image.asset("$IMAGE_PATH/button_note_setting.png"),
-          iconSize: 21.0,
-          onPressed: () {
-            showSettingModal(context, currentDateState, groupId, noteData);
-          },
-        ),
+      customerId == Prefs.getCustomerId() ? Row(
+        children: [
+          SizedBox(
+            width: 21,
+            height: 21,
+            child: IconButton(
+              padding: EdgeInsets.zero,
+              icon: Image.asset("$IMAGE_PATH/share_icon.png"),
+              iconSize: 21.0,
+              onPressed: () {
+                Get.to(const ShareNoteWidget(), arguments: {"date" : Utils.formatDate("yyyyMMdd", currentDateState), "data" : noteData});
+              },
+            ),
+          ),
+          const SizedBox(width: 20,),
+          SizedBox(
+            width: 21,
+            height: 21,
+            child: IconButton(
+              padding: EdgeInsets.zero,
+              icon: Image.asset("$IMAGE_PATH/button_note_setting.png"),
+              iconSize: 21.0,
+              onPressed: () {
+                showSettingModal(context, currentDateState, groupId, noteData);
+              },
+            ),
+          )
+        ],
       ) : const SizedBox.shrink()
     ],
   ));
@@ -382,36 +399,6 @@ Future showSettingModal(BuildContext context, int currentDateState, int groupId,
                       ),
                     ),
                   ),
-                  // const SizedBox(
-                  //   height: 18,
-                  // ),
-                  // SizedBox(
-                  //   width: double.infinity,
-                  //   height: 60,
-                  //   child: ElevatedButton(
-                  //     onPressed: () {
-                  //       Navigator.pop(context);
-                  //       Get.to(const ShareNoteWidget(), arguments: noteData);
-                  //     },
-                  //     style: ElevatedButton.styleFrom(
-                  //       side: const BorderSide(
-                  //         color: COLOR_SUB,
-                  //       ),
-                  //       shape: RoundedRectangleBorder(
-                  //         borderRadius: BorderRadius.circular(10.0),
-                  //       ),
-                  //       backgroundColor: Colors.white,
-                  //       shadowColor: Colors.transparent,
-                  //     ),
-                  //     child: const Text(
-                  //       "감사일기 공유",
-                  //       style: TextStyle(
-                  //           fontFamily: FONT_APPLESD,
-                  //           fontSize: 15,
-                  //           color: COLOR_SUB),
-                  //     ),
-                  //   ),
-                  // ),
                   const SizedBox(
                     height: 18,
                   ),

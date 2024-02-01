@@ -6,6 +6,8 @@ const IMAGE_PATH = "assets/images";
 const FONT_SFPRO = "SF Pro";
 const FONT_NANUMMYNGJO = "Nanum Myngjo";
 const FONT_APPLESD = "Apple SD Gothic Neo";
+const FONT_APPLESD_EXTRABOLD = "Apple SD Gothic Neo Extra Bold";
+const FONT_APPLESD_HEAVY = "Apple SD Gothic Neo Heavy";
 const FONT_BODONI_BOLD = "Bodoni Bold";
 const FONT_BODONI_BOOK = "Bodoni Book";
 

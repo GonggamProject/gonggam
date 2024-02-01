@@ -1,11 +1,16 @@
+import 'dart:collection';
 import 'dart:typed_data';
-
-import 'package:firebase_messaging/firebase_messaging.dart';
+import 'dart:io';
+import 'package:gonggam/ui/common/alert.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../common/constants.dart';
+import '../../domain/note/note.dart';
 
 class ShareNoteWidget extends StatefulWidget {
   const ShareNoteWidget({super.key});
@@ -15,31 +20,50 @@ class ShareNoteWidget extends StatefulWidget {
 }
 
 class _ShareNoteWidgetState extends State<ShareNoteWidget>{
-  final _now = DateTime.now();
+  final _screenshotControllerList = [ScreenshotController(), ScreenshotController(), ScreenshotController(), ScreenshotController()];
   final _controller = PageController(initialPage: 0, viewportFraction:0.8);
-  final _screenshotController = ScreenshotController();
+  
+  final DateTime shareDate = DateTime.parse(Get.arguments["date"]);
+  final List<Note> shareData = Get.arguments["data"];
+
   int _currentIndex = 0;
-  Uint8List image1 = Uint8List.fromList([]);
+  Map<int, Uint8List> imageMap = HashMap();
 
   @override
   void initState() {
-    setNewImage();
+    generateShareImages();
   }
 
-  void setNewImage() {
-    _screenshotController.captureFromLongWidget(page3(), constraints: const BoxConstraints(
+  void generateShareImages() {
+    _screenshotControllerList[0].captureFromLongWidget(page1(), constraints: const BoxConstraints(
         maxHeight: 1920, minHeight: 1920, maxWidth: 1080, minWidth: 1080),).then((value) {
-      image1 = value;
-      setState(() {
-      });
+          imageMap[0] = value;
+          setState(() {});
+        });
+
+    _screenshotControllerList[1].captureFromLongWidget(page2(), constraints: const BoxConstraints(
+        maxHeight: 1920, minHeight: 1920, maxWidth: 1080, minWidth: 1080),).then((value) {
+          imageMap[1] = value;
+          setState(() {});
+    });
+
+    _screenshotControllerList[2].captureFromLongWidget(page3(), constraints: const BoxConstraints(
+        maxHeight: 1920, minHeight: 1920, maxWidth: 1080, minWidth: 1080),).then((value) {
+      imageMap[2] = value;
+      setState(() {});
+    });
+
+    _screenshotControllerList[3].captureFromLongWidget(page4(), constraints: const BoxConstraints(
+        maxHeight: 1920, minHeight: 1920, maxWidth: 1080, minWidth: 1080),).then((value) {
+      imageMap[3] = value;
+      setState(() {});
     });
   }
 
   @override
   Widget build(BuildContext context) {
 
-    List<Widget> pageWidgets = [page1(), page1()];
-    int lastIndex = pageWidgets.length - 1;
+    List<Widget> pageWidgets = [mainPage1(), mainPage2(), mainPage3(), mainPage4()];
 
     return Scaffold(
       backgroundColor: COLOR_BACKGROUND,
@@ -67,55 +91,34 @@ class _ShareNoteWidgetState extends State<ShareNoteWidget>{
                     controller: _controller,
                     itemCount: pageWidgets.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return Padding(padding: EdgeInsets.only(left: 10, right: 10),
+                      return Padding(padding: const EdgeInsets.only(left: 10, right: 10),
                         child: pageWidgets[index],
                       );
                     },
-                    // physics: const ClampingScrollPhysics(),
-                    // scrollDirection: Axis.horizontal,
-                    // controller: _controller,
-                    // onPageChanged: (value) {
-                    //   setState(() {
-                    //     _currentIndex = value;
-                    //   });
-                    // },
-                    // children: pageWidgets
+                    onPageChanged: (value) {
+                    setState(() {
+                      _currentIndex = value;
+                    });
+                  },
                 ),
               ),
               const SizedBox(height: 33,),
               SizedBox(
                 width: 215,
                 height: 43,
-                child: ElevatedButton(onPressed: () {
-                  // _currentIndex == lastIndex ?
-                  //     Get.off(const LoginWidget())
-                  //     : _controller.animateToPage(++_currentIndex, duration: const Duration(milliseconds: 250), curve: Curves.easeInOut);
-                  _screenshotController.capture().then((value) async {
+                child: ElevatedButton(onPressed: () async {
+                  if(imageMap[0] != null) {
+                    try {
+                      final tempDir = await getTemporaryDirectory();
+                      final filePath = '${tempDir.path}/gonggam_share${_currentIndex}_$shareDate.png';
 
-                    image1 = value!;
-                    print(image1);
-                    setState(() {
-
-                    });
-                    // var res = await ImageGallerySaver.saveImage(value!, quality: 60, name: "test.png");
-                    // MemoryImage(res);
-                    // var path = await LecleFlutterAbsolutePath.getAbsolutePath(uri: res["filePath"]);
-                    // print(path);
-                    // Share.shareXFiles([XFile(path!)], subject: '100일 챌린지');
-
-                    // InstagramSharePlus.shareInstagram(path: path, type: "image");
-                    // SocialShare.shareInstagramStory(appId: "281461371314772", imagePath: path!);
-
-                    String instagramUsername = "gonggambook";
-                    String imageUrl = "https://fastly.picsum.photos/id/250/200/300.jpg"; // 이미지의 URL 또는 파일 경로
-                    // String url = "instagram://stories"
-
-                    // if (await canLaunch(url)) {
-                    //   await launch(url);
-                    // } else {
-                    //   print("Could not launch Instagram.");
-                    // }
-                  });
+                      await File(filePath).writeAsBytes(imageMap[_currentIndex]!);
+                      final xFile = XFile(filePath);
+                      Share.shareXFiles([xFile]);
+                    } catch (e) {
+                      Alert.alertDialog(e.toString());
+                    }
+                  }
                 },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
@@ -128,72 +131,328 @@ class _ShareNoteWidgetState extends State<ShareNoteWidget>{
                     textAlign: TextAlign.center,
                     text: TextSpan(
                       children: [
-                        WidgetSpan(child: Image.asset("$IMAGE_PATH/download_icon.png", height: 21, width: 21,), alignment: PlaceholderAlignment.middle),
+                        WidgetSpan(child: Image.asset("$IMAGE_PATH/share_icon.png", height: 21, width: 21,), alignment: PlaceholderAlignment.middle),
                         const TextSpan(text: "   "),
-                        const TextSpan(text: "감사일기 공유하기", style: TextStyle(fontFamily: FONT_APPLESD, fontSize: 15, color: Colors.black, ),),
+                        TextSpan(text: "감사일기 공유하기", style: TextStyle(fontFamily: FONT_APPLESD, fontWeight: FontWeight.bold, fontSize: 15, color: imageMap[0] != null ? Colors.black : Colors.grey, ),),
                       ]
                     ),
                   )
                 ),
               ),
+              const SizedBox(height: 25,)
             ]
         ),
       ),
     );
   }
 
-  Widget page1() {
-    return image1.isEmpty ? const Center(child: CircularProgressIndicator()) : Image.memory(image1);
+  Widget mainPage1() {
+    return imageMap[0] == null ? const Center(child: CircularProgressIndicator()) : Image.memory(imageMap[0]!);
   }
 
-  Widget page3() {
-    return Screenshot(controller: _screenshotController,
-        child: Container(
-          color: Colors.red,
+  Widget mainPage2() {
+    return imageMap[1] == null ? const Center(child: CircularProgressIndicator()) : Image.memory(imageMap[1]!);
+  }
+
+  Widget mainPage3() {
+    return imageMap[2] == null ? const Center(child: CircularProgressIndicator()) : Image.memory(imageMap[2]!);
+  }
+
+  Widget mainPage4() {
+    return imageMap[3] == null ? const Center(child: CircularProgressIndicator()) : Image.memory(imageMap[3]!);
+  }
+
+  Widget page1() {
+    return Screenshot(controller: _screenshotControllerList[0],
+        child: SizedBox(
           width: 1080,
           height: 1920,
           child: Stack(
-            children: [
-              Align(
-                child: Image.asset("$IMAGE_PATH/feed1.png",width: 1080, height: 1920, fit: BoxFit.fitWidth,),
-              ),
-              const Align(
-                alignment: Alignment.topCenter,
-                child: Padding(
-                  padding: EdgeInsets.only(top: 24),
-                  child: Text("30", style: TextStyle(fontSize: 500, fontFamily: FONT_BODONI_BOLD, fontWeight: FontWeight.bold, color: Colors.red, letterSpacing: -20),),
-                )
-              ),
-              Positioned(
-                  top: 666,
-                  left: 252,
-                  child: Text("2024", style: TextStyle(fontSize: 53, fontFamily: FONT_BODONI_BOOK, color: Colors.red, letterSpacing: -1.5),)
-              ),
-              Positioned(
-                  top: 666,
-                  left: 470,
-                  child: Text("January", style: TextStyle(fontSize: 53, fontFamily: FONT_BODONI_BOOK, color: Colors.red, letterSpacing: -1.5),)
-              ),
-              Positioned(
-                  top: 666,
-                  left: 756,
-                  child: Text("Fri.", style: TextStyle(fontSize: 53, fontFamily: FONT_BODONI_BOOK, color: Colors.red, letterSpacing: -1.5),)
-              ),
-              getPage1Section()
-          ],),
+            children: generateSharePage1(),),
         )
     );
   }
 
-  Widget getPage1Section() {
-    return  Positioned(
-        top: 666,
-        left: 756,
-        child: Row(
+  List<Widget> generateSharePage1() {
+    List<Widget> widgets = [];
+    widgets.add(Align(
+      child: Image.asset("$IMAGE_PATH/feed1.png",width: 1080, height: 1920, fit: BoxFit.fitWidth,),
+    ));
+    widgets.add(Align(
+        alignment: Alignment.topCenter,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 24),
+          child: Text(shareDate.day.toString(), style: const TextStyle(fontSize: 500, fontFamily: FONT_BODONI_BOLD, fontWeight: FontWeight.bold, color: Colors.white, letterSpacing: -20),),
+        )
+    ));
+    widgets.add(
+        Align(
+            alignment: Alignment.topCenter,
+            child: Padding(
+                padding: const EdgeInsets.only(top: 657),
+                child: Text("${shareDate.year}    |    ${DateFormat('MMMM', 'en_US').format(shareDate)}    |    ${DateFormat('E', 'en_US').format(shareDate)}.", style: const TextStyle(fontSize: 53, fontFamily: FONT_BODONI_BOOK, color: Colors.white, letterSpacing: -1.5),)
+            )
+        )
+    );
+
+    for(int i=0; i<shareData.length; i++) {
+      widgets.add(getPage1Section(i.toDouble(), shareData[i].content.replaceAll("\n", " ")));
+    }
+    return widgets;
+  }
+
+  Widget getPage1Section(double index, String content) {
+    String num = (index + 1).toInt().toString();
+    return Positioned(
+        top: 870 + (index * 156),
+        left: 155,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(
+            maxWidth: 770,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  Text("$num.", style: const TextStyle(fontSize: 50, fontFamily: FONT_NANUMMYNGJO, fontWeight: FontWeight.bold, color: Colors.white, letterSpacing: -1.5),),
+                  const SizedBox(width: 60,),
+                  Container(
+                    height: 90,
+                    alignment: Alignment.centerLeft,
+                    constraints: const BoxConstraints(
+                      maxWidth: 650,
+                    ),
+                      child: RichText(
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        text: TextSpan(
+                            text: content,
+                            style: const TextStyle(fontSize: 30, fontFamily: FONT_NANUMMYNGJO, color: Colors.white, height: 1.5, letterSpacing: -1)
+                        ),
+                      ),
+                  )
+                ],
+              ),
+              const SizedBox(height: 35,),
+              index == 4 ? const SizedBox.shrink() : const SizedBox(
+                height: 1,
+                width: 900,
+                child: Divider(height: 1, thickness: 1, color: Colors.white,),
+              ),
+            ],
+          ),
+        )
+    );
+  }
+
+  Widget page2() {
+    return Screenshot(controller: _screenshotControllerList[1],
+        child: SizedBox(
+          width: 1080,
+          height: 1920,
+          child: Stack(
+            children: generateSharePage2(),),
+        )
+    );
+  }
+
+  List<Widget> generateSharePage2() {
+    List<Widget> widgets = [];
+    widgets.add(Align(
+      child: Image.asset("$IMAGE_PATH/feed2.png",width: 1080, height: 1920, fit: BoxFit.fitWidth,),
+    ));
+    widgets.add(Positioned(
+        top: 383,
+        left: 210,
+        child: Text(DateFormat("yyyy.MM.dd").format(shareDate), style: const TextStyle(fontSize: 44, fontFamily: FONT_NANUMMYNGJO, color: COLOR_BOOK4, letterSpacing: -1.5),)
+    ));
+
+    for(int i=0; i<shareData.length; i++) {
+      widgets.add(getPage2Section(i.toDouble(), shareData[i].content.replaceAll("\n", " ")));
+    }
+    return widgets;
+  }
+
+  Widget getPage2Section(double index, String content) {
+    String num = (index + 1).toInt().toString();
+    return Positioned(
+        top: 485 + (index * 248),
+        left: 210,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(
+          maxWidth: 700,),
+          child: Column(
           children: [
-            Text("1.", style: TextStyle(fontSize: 53, fontFamily: FONT_BODONI_BOOK, color: Colors.red, letterSpacing: -1.5),),
-            Text("동해물과백두산이마르고닳도록하나님이보우하사우리나라만세무궁화삼천리화려강산대한사람대한으", style: TextStyle(fontSize: 53, fontFamily: FONT_BODONI_BOOK, color: Colors.red, letterSpacing: -1.5),)
+            Align(
+                alignment: Alignment.centerLeft,
+                child: Text("$num.", style: const TextStyle(fontSize: 50, fontFamily: FONT_NANUMMYNGJO, fontWeight: FontWeight.bold, color: COLOR_BOOK4, letterSpacing: -1.5),)),
+            const SizedBox(height: 23,),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: SizedBox(
+                height: 90,
+                child: RichText(
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                  text: TextSpan(
+                      text: content,
+                      style: const TextStyle(fontSize: 30, fontFamily: FONT_NANUMMYNGJO, color: COLOR_BOOK4, height: 1.5, letterSpacing: -1)
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 35,),
           ],
+        ),
+        ),
+    );
+  }
+
+  Widget page3() {
+    return Screenshot(controller: _screenshotControllerList[2],
+        child: SizedBox(
+          width: 1080,
+          height: 1920,
+          child: Stack(
+            children: generateSharePage3(),),
+        )
+    );
+  }
+
+  List<Widget> generateSharePage3() {
+    List<Widget> widgets = [];
+    widgets.add(Align(
+      child: Image.asset("$IMAGE_PATH/feed3.png",width: 1080, height: 1920, fit: BoxFit.fitWidth,),
+    ));
+    widgets.add(Positioned(
+        top: 253,
+        left: 192,
+        child: Text(DateFormat("yyyy.MM.dd").format(shareDate), style: const TextStyle(fontSize: 83, fontFamily: FONT_BODONI_BOOK, color: Color(0xFF932E0C), letterSpacing: -1.5),)
+    ));
+
+    for(int i=0; i<shareData.length; i++) {
+      widgets.add(getPage3Section(i.toDouble(), shareData[i].content.replaceAll("\n", " ")));
+    }
+    return widgets;
+  }
+
+  Widget getPage3Section(double index, String content) {
+    String num = (index + 1).toInt().toString();
+    return Positioned(
+      top: 515 + (index * 226),
+      left: 195,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(
+            maxWidth: 770,
+          ),
+          child: Column(
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                      margin: const EdgeInsets.only(top: 15),
+                      child: Text("$num.", style: const TextStyle(fontSize: 50, fontFamily: FONT_NANUMMYNGJO, fontWeight: FontWeight.bold, color: Color(0xFF932E0C), letterSpacing: -1.5),)),
+                  const SizedBox(width: 38,),
+                  Container(
+                    height: 140,
+                    alignment: Alignment.centerLeft,
+                    constraints: const BoxConstraints(
+                      maxWidth: 640,
+                    ),
+                    child: RichText(
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 3,
+                      text: TextSpan(
+                          text: content,
+                          style: const TextStyle(fontSize: 40, fontFamily: FONT_NANUMMYNGJO, color: Color(0xFF932E0C), letterSpacing: -1)
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
+        )
+    );
+  }
+
+  Widget page4() {
+    return Screenshot(controller: _screenshotControllerList[3],
+        child: SizedBox(
+          width: 1080,
+          height: 1920,
+          child: Stack(
+            children: generateSharePage4(),),
+        )
+    );
+  }
+
+  List<Widget> generateSharePage4() {
+    List<Widget> widgets = [];
+    widgets.add(Align(
+      child: Image.asset("$IMAGE_PATH/feed4.png",width: 1080, height: 1920, fit: BoxFit.fitWidth,),
+    ));
+
+    widgets.add(
+      Positioned(
+          top: 165,
+          left: 344,
+          child: Text(DateFormat("yyyy.MM.dd").format(shareDate),
+            style: const TextStyle(fontSize: 83, fontFamily: FONT_APPLESD_EXTRABOLD, color: COLOR_BOOK4, letterSpacing: -1.6),))
+    );
+
+    for(int i=0; i<shareData.length; i++) {
+      widgets.add(getPage4Section(i.toDouble(), shareData[i].content.replaceAll("\n", " ")));
+    }
+    return widgets;
+  }
+
+  Widget getPage4Section(double index, String content) {
+    List<Color> colors = [COLOR_BOOK5, COLOR_BOOK4, COLOR_BOOK3, const Color(0xFF43230F), COLOR_SUB];
+
+    String num = (index + 1).toInt().toString();
+    return Positioned(
+        top: 336 + (index * 272),
+        left: 108,
+        child: Container(
+          width: 863,
+          height: 232,
+          padding: const EdgeInsets.only(left: 57, right: 40, top: 45, bottom: 20),
+          decoration: BoxDecoration(
+            color: colors[index.toInt()],
+            borderRadius: const BorderRadius.all(Radius.circular(99)),
+          ),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              maxWidth: 780,
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                    width: 120,
+                    child: Text("0$num", style: const TextStyle(fontSize: 90, fontFamily: FONT_APPLESD_HEAVY, color: Color(0xFFF0E6DD)),)),
+                const SizedBox(width: 30,),
+                Container(
+                  height: 140,
+                  alignment: Alignment.centerLeft,
+                  constraints: const BoxConstraints(
+                    maxWidth: 580,
+                  ),
+                  child: RichText(
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 3,
+                    text: TextSpan(
+                        text: content,
+                        style: const TextStyle(fontSize: 36, fontFamily: FONT_APPLESD, color: Color(0xFFF0E6DD ), letterSpacing: -1)
+                    ),
+                  ),
+                )
+              ],
+            )
+          ),
         )
     );
   }
