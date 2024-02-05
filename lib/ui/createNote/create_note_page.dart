@@ -26,9 +26,10 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
   final int currentDateState = Get.arguments ?? 0;
   late int groupId = groupController.group.id;
   late bool isEditMode = false;
-  final noteDataList = LinkedList<NoteData>();
   final ScrollController _scrollController = ScrollController();
+  final List<String> hintOrderText = ["첫", "두", "세", "네", "다섯"];
 
+  final noteDataList = LinkedList<NoteData>();
   final List<FocusNode> _focusNodes = [];
 
   @override
@@ -241,14 +242,12 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
   }
 
   Widget getNoteWidget(int index, NoteData data) {
-    final List<String> hintOrderText = ["첫", "두", "세", "네", "다섯"];
-
     return Stack(
       children: [
         Padding(
           padding: index == 0 ? const EdgeInsets.only(top: 60.0, bottom: 12) : const EdgeInsets.only(bottom: 12),
           child: SizedBox(
-            height: data.textFieldHight,
+            height: 99,
             child: TextField(
               focusNode: _focusNodes[index],
               controller: data.controller,
@@ -279,11 +278,9 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                     borderSide: BorderSide(
                         width: 3, color: Color(0xFFF2F2F2)),
-                  )),
-              onChanged: (text) {
-                double newHeight = _calculateNewHeight(text);
+                  )), onChanged: (value) {
                 setState(() {
-                  data.textFieldHight = newHeight;
+                  noteDataList.elementAt(index).dataLength = value.length;
                 });
               },
             ),
@@ -319,10 +316,10 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
           ),
         ),
         Positioned(
-            top: index == 0 ? data.textFieldHight + 30 : data.textFieldHight - 30,
+            top: 130,
             right: 20,
             child: Text(
-              "${data.getNoteTextLength()}자 / 최대 45자",
+              "${noteDataList.elementAt(index).dataLength}자 / 최대 45자",
               style: const TextStyle(
                   fontFamily: FONT_APPLESD, fontSize: 12, color: COLOR_GRAY),
             )),
@@ -385,6 +382,7 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
 
 class NoteData extends LinkedListEntry<NoteData> {
   final controller = TextEditingController();
+  int dataLength = 0;
 
   NoteData();
 
@@ -394,7 +392,7 @@ class NoteData extends LinkedListEntry<NoteData> {
   }
 
   String getNoteText() => controller.text;
-  int getNoteTextLength() => controller.text.characters.length;
+  int getNoteTextLength() {return dataLength;}
   late int? noteId = null;
   late double textFieldHight = 99.0;
 }
