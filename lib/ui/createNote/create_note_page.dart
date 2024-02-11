@@ -252,7 +252,7 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
               focusNode: _focusNodes[index],
               controller: data.controller,
               keyboardType: TextInputType.text,
-              maxLength: 45,
+              maxLength: MAX_NOTE_LENGTH,
               maxLines: 2,
               decoration: InputDecoration(
                   counterText: "",
@@ -319,7 +319,7 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
             top: 130,
             right: 20,
             child: Text(
-              "${noteDataList.elementAt(index).dataLength}자 / 최대 45자",
+              "${noteDataList.elementAt(index).dataLength}자 / 최대 $MAX_NOTE_LENGTH자",
               style: const TextStyle(
                   fontFamily: FONT_APPLESD, fontSize: 12, color: COLOR_GRAY),
             )),

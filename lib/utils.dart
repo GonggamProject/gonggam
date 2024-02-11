@@ -43,4 +43,23 @@ class Utils {
         updateButtonText: "업데이트하기",
         allowDismissal: false);
   }
+
+  static String dailyPushText(int dailyPushTime) {
+    if (dailyPushTime == -1) return "";
+
+    // 0 ~ 11
+    if (dailyPushTime < 12) {
+      if (dailyPushTime == 0) {
+        return "오전 12:00";
+      } else {
+        return "오전 $dailyPushTime :00";
+      }
+    } else { // 12 ~ 23
+      if (dailyPushTime == 12) {
+        return "오후 12:00";
+      } else {
+        return "오후 ${dailyPushTime - 12} :00";
+      }
+    }
+  }
 }

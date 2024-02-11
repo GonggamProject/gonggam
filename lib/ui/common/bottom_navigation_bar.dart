@@ -7,7 +7,6 @@ import 'package:gonggam/ui/createNote/create_note_page.dart';
 import 'package:gonggam/ui/setting/setting_page.dart';
 import 'package:gonggam/utils.dart';
 
-import '../../common/prefs.dart';
 import '../createBookstore/create_bookstore_main_page.dart';
 import '../createBookstore/create_bookstore_name_page.dart';
 import 'alert.dart';

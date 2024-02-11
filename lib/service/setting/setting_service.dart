@@ -1,7 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:gonggam/domain/common/response.dart' as gonggam_res;
+import 'package:gonggam/domain/setting/pushes_get.dart';
+import 'package:gonggam/domain/setting/pushes_update.dart';
 import 'package:gonggam/ui/common/alert.dart';
 
+import '../../common/http/http_client.dart';
 import 'info_utils.dart';
 
 class SettingService {
@@ -50,5 +54,15 @@ class SettingService {
       String message = "";
       Alert.alertDialog(title);
     }
+  }
+
+  static Future<PushesGet> getPushes() async {
+    final response = await GongGamHttpClient().getRequest("/v1/settings/pushes", null);
+    gonggam_res.Response<PushesGet> res = gonggam_res.Response.fromJson(response.data, (json) => PushesGet.fromJson(json as Map<String, dynamic>));
+    return res.content!;
+  }
+
+  static Future<void> postPushes(PushesUpdate pushesUpdate) async {
+    await GongGamHttpClient().postRequest("/v1/settings/pushes", pushesUpdate.toJson());
   }
 }

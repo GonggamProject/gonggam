@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'dart:typed_data';
 import 'dart:io';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:gonggam/ui/common/alert.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -115,6 +116,9 @@ class _ShareNoteWidgetState extends State<ShareNoteWidget>{
                       await File(filePath).writeAsBytes(imageMap[_currentIndex]!);
                       final xFile = XFile(filePath);
                       Share.shareXFiles([xFile]);
+
+                      FirebaseAnalytics.instance.logEvent(name: "share_image", parameters: {'id' : _currentIndex});
+
                     } catch (e) {
                       Alert.alertDialog(e.toString());
                     }

@@ -33,8 +33,8 @@ class FlutterLocalNotification {
 
   static Future<void> showNotification(String? title, String? body) async {
     const AndroidNotificationDetails androidNotificationDetails =
-    AndroidNotificationDetails('channelId', 'channelName',
-        channelDescription: 'channel description',
+    AndroidNotificationDetails('gonggam', '공감일기 알람',
+        channelDescription: '공감일기 알람',
         importance: Importance.max,
         priority: Priority.max,
         showWhen: false);
@@ -74,16 +74,3 @@ class FlutterLocalNotification {
     });
   }
 }
-
-
-/*
-✅ 작성 리마인드 알림
-ㄴ 타이틀 : 공감책방
-ㄴ 메시지 : 오늘의 감사일기를 작성할 시간이에요!
-ㄴ 시간설정 O
-ㄴ 하나라도 오늘 작성한 일기가 있으면 보내지 않는다.
-
-✅ 멤버 새글 알림
-ㄴ 타이틀 : {책방명}
-ㄴ 메시지 : {멤버명}님의 감사일기를 확인해보세요!
- */

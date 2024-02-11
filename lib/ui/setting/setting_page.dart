@@ -1,11 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gonggam/controller/group_controller.dart';
+import 'package:gonggam/domain/setting/pushes_get.dart';
 import 'package:gonggam/service/customer/customer_service.dart';
 import 'package:gonggam/service/setting/setting_service.dart';
 import 'package:gonggam/ui/common/bottom_navigation_bar.dart';
 import 'package:gonggam/ui/createBookstore/create_bookstore_name_page.dart';
 import 'package:gonggam/ui/setting/group_management_page.dart';
+import 'package:gonggam/ui/setting/push_management_page.dart';
 import 'package:gonggam/ui/setting/secession_page.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -23,9 +25,10 @@ class SettingPageWidget extends StatefulWidget {
 }
 
 class _SettingPageWidgetState extends State<SettingPageWidget> {
-  late GroupController? groupController;
-  String appVersion = "0.0.0";
   final InAppReview inAppReview = InAppReview.instance;
+  late GroupController? groupController;
+  PushesGet pushStatus = PushesGet(false, null);
+  String appVersion = "0.0.0";
 
   @override
   void initState() {
@@ -37,7 +40,15 @@ class _SettingPageWidgetState extends State<SettingPageWidget> {
       groupController = null;
     }
 
+    getPushStatus();
     getAppVersion();
+  }
+
+  void getPushStatus() async {
+    PushesGet pushesGet = await SettingService.getPushes();
+    setState(() {
+      pushStatus = pushesGet;
+    });
   }
 
   void getAppVersion() async {
@@ -149,6 +160,24 @@ class _SettingPageWidgetState extends State<SettingPageWidget> {
                               ],
                             ),
                           )),
+                          const Icon(Icons.keyboard_arrow_right),
+                        ],)
+                      ],),
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(bottom: 20),
+                  height: 27,
+                  child: InkWell(
+                    onTap: () => {
+                      Get.to(const PushManagementPageWidget())
+                    },
+                    child: Row(mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,children: [
+                        const Text("알림설정"),
+                        Row(children: [
+                          pushStatus.getPushStatus() ? const Text("ON", style: TextStyle(fontFamily: FONT_APPLESD, fontWeight: FontWeight.bold, fontSize: 15, color: Color(0xFF167CC7)),) :
+                          const Text("OFF", style: TextStyle(fontFamily: FONT_APPLESD, fontWeight: FontWeight.bold, fontSize: 15, color: COLOR_BOOK3),),
                           const Icon(Icons.keyboard_arrow_right),
                         ],)
                       ],),

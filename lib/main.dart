@@ -10,6 +10,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
+import 'common/notification.dart';
 import 'common/prefs.dart';
 import 'common/firebase_options.dart';
 
@@ -28,13 +29,13 @@ void main() async {
 
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
-  // FlutterLocalNotification.init();
-  //
-  // Future.delayed(const Duration(seconds: 3),
-  //     FlutterLocalNotification.requestNotificationPermission()
-  // );
-  //
-  // FlutterLocalNotification.notificationHandler();
+  FlutterLocalNotification.init();
+
+  Future.delayed(const Duration(seconds: 3),
+      FlutterLocalNotification.requestNotificationPermission()
+  );
+
+  FlutterLocalNotification.notificationHandler();
 
   KakaoSdk.init(
     nativeAppKey: 'aaf1230d1f2f981d6e5e9960076c006e',
