@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:gonggam/domain/group/group.dart';
 import 'package:gonggam/domain/note/note.dart';
@@ -279,9 +280,7 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
                     borderSide: BorderSide(
                         width: 3, color: Color(0xFFF2F2F2)),
                   )), onChanged: (value) {
-                setState(() {
-                  noteDataList.elementAt(index).dataLength = value.length;
-                });
+                setState(() {});
               },
             ),
           ),
@@ -316,10 +315,10 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
           ),
         ),
         Positioned(
-            top: 130,
+            top: index == 0 ? data.textFieldHight + 30 : data.textFieldHight - 30,
             right: 20,
             child: Text(
-              "${noteDataList.elementAt(index).dataLength}자 / 최대 $MAX_NOTE_LENGTH자",
+              "${noteDataList.elementAt(index).getNoteTextLength()}자 / 최대 $MAX_NOTE_LENGTH자",
               style: const TextStyle(
                   fontFamily: FONT_APPLESD, fontSize: 12, color: COLOR_GRAY),
             )),
@@ -372,18 +371,10 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
   bool isAllNoteWrited() {
     return noteDataList.where((note) => note.getNoteTextLength() == 0).toList().isEmpty;
   }
-
-  double _calculateNewHeight(String text) {
-    int numberOfLines = '\n'.allMatches(text).length + 1;
-    double newHeight = numberOfLines * 20.0; // Adjust the factor as needed
-    return newHeight < 99 ? 99 : newHeight;
-  }
 }
 
 class NoteData extends LinkedListEntry<NoteData> {
   final controller = TextEditingController();
-  int dataLength = 0;
-
   NoteData();
 
   NoteData.edit(Note note) {
@@ -392,7 +383,7 @@ class NoteData extends LinkedListEntry<NoteData> {
   }
 
   String getNoteText() => controller.text;
-  int getNoteTextLength() {return dataLength;}
+  int getNoteTextLength() {return controller.text.length;}
   late int? noteId = null;
   late double textFieldHight = 99.0;
 }

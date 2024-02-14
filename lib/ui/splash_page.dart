@@ -1,18 +1,14 @@
 
 import 'dart:async';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:get/get.dart';
 import 'package:gonggam/common/admob/admob.dart';
-import 'package:gonggam/common/notification.dart';
 import 'package:gonggam/controller/invite_controller.dart';
 import 'package:gonggam/ui/bookstore/invite/invited_page.dart';
-import 'package:gonggam/ui/common/alert.dart';
 import 'package:gonggam/ui/walkthrought_page.dart';
-import 'package:new_version_plus/new_version_plus.dart';
 import 'package:uni_links/uni_links.dart';
 
 import '../common/constants.dart';
@@ -20,7 +16,6 @@ import '../common/prefs.dart';
 import '../controller/group_controller.dart';
 import '../domain/group/group.dart';
 import '../domain/group/groups.dart';
-import '../main.dart';
 import '../service/auth/auth_factory.dart';
 import '../service/group/group_service.dart';
 import '../utils.dart';
@@ -49,6 +44,8 @@ class _SplashWidgetState extends State<SplashWidget> {
     _initURIHandler();
 
     t = Timer(const Duration(milliseconds: 1500), navigateToNextScreen);
+
+    FlutterAppBadger.updateBadgeCount(0);
   }
 
   void navigateToNextScreen() async {
