@@ -248,13 +248,13 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
         Padding(
           padding: index == 0 ? const EdgeInsets.only(top: 60.0, bottom: 12) : const EdgeInsets.only(bottom: 12),
           child: SizedBox(
-            height: 99,
+            height: 120,
             child: TextField(
               focusNode: _focusNodes[index],
               controller: data.controller,
               keyboardType: TextInputType.text,
               maxLength: MAX_NOTE_LENGTH,
-              maxLines: 2,
+              maxLines: 4,
               decoration: InputDecoration(
                   counterText: "",
                   contentPadding: const EdgeInsets.fromLTRB(20, 20, 65, 40),
@@ -315,7 +315,7 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
           ),
         ),
         Positioned(
-            top: index == 0 ? data.textFieldHight + 30 : data.textFieldHight - 30,
+            top: index == 0 ? data.textFieldHight + 50 : data.textFieldHight - 10,
             right: 20,
             child: Text(
               "${noteDataList.elementAt(index).getNoteTextLength()}자 / 최대 $MAX_NOTE_LENGTH자",
