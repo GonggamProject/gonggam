@@ -166,7 +166,7 @@ class _ShareNoteWidgetState extends State<ShareNoteWidget>{
     return imageMap[3] == null ? const Center(child: CircularProgressIndicator()) : Image.memory(imageMap[3]!);
   }
 
-  Widget page1() {
+  Widget  page1() {
     return Screenshot(controller: _screenshotControllerList[0],
         child: SizedBox(
           width: 1080,
@@ -184,17 +184,14 @@ class _ShareNoteWidgetState extends State<ShareNoteWidget>{
     ));
     widgets.add(Align(
         alignment: Alignment.topCenter,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 24),
-          child: Text(shareDate.day.toString(), style: const TextStyle(fontSize: 500, fontFamily: FONT_BODONI_BOLD, fontWeight: FontWeight.bold, color: Colors.white, letterSpacing: -20),),
-        )
+        child: Text(shareDate.day.toString(), style: const TextStyle(fontSize: 448, fontFamily: FONT_BODONI_BOLD, fontWeight: FontWeight.bold, color: Colors.white, letterSpacing: -20),)
     ));
     widgets.add(
         Align(
             alignment: Alignment.topCenter,
             child: Padding(
-                padding: const EdgeInsets.only(top: 657),
-                child: Text("${shareDate.year}    |    ${DateFormat('MMMM', 'en_US').format(shareDate)}    |    ${DateFormat('E', 'en_US').format(shareDate)}.", style: const TextStyle(fontSize: 53, fontFamily: FONT_BODONI_BOOK, color: Colors.white, letterSpacing: -1.5),)
+                padding: const EdgeInsets.only(top: 580),
+                child: Text("${shareDate.year}    |    ${DateFormat('MMMM', 'en_US').format(shareDate)}    |    ${DateFormat('E', 'en_US').format(shareDate)}.", style: const TextStyle(fontSize: 51, fontFamily: FONT_BODONI_BOOK, color: Colors.white, letterSpacing: -1.5),)
             )
         )
     );
@@ -208,7 +205,7 @@ class _ShareNoteWidgetState extends State<ShareNoteWidget>{
   Widget getPage1Section(double index, String content) {
     String num = (index + 1).toInt().toString();
     return Positioned(
-        top: 870 + (index * 156),
+        top: 720 + (index * 190),
         left: 155,
         child: ConstrainedBox(
           constraints: const BoxConstraints(
@@ -219,26 +216,26 @@ class _ShareNoteWidgetState extends State<ShareNoteWidget>{
             children: [
               Row(
                 children: [
-                  Text("$num.", style: const TextStyle(fontSize: 50, fontFamily: FONT_NANUMMYNGJO, fontWeight: FontWeight.bold, color: Colors.white, letterSpacing: -1.5),),
-                  const SizedBox(width: 60,),
+                  Text("$num.", style: const TextStyle(fontSize: 48, fontFamily: FONT_NANUMMYNGJO, fontWeight: FontWeight.bold, color: Colors.white, letterSpacing: -1.5),),
+                  const SizedBox(width: 57,),
                   Container(
-                    height: 90,
+                    height: 165,
                     alignment: Alignment.centerLeft,
                     constraints: const BoxConstraints(
                       maxWidth: 650,
                     ),
                       child: RichText(
                         overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
+                        maxLines: 4,
                         text: TextSpan(
                             text: content,
-                            style: const TextStyle(fontSize: 30, fontFamily: FONT_NANUMMYNGJO, color: Colors.white, height: 1.5, letterSpacing: -1)
+                            style: const TextStyle(fontSize: 26, fontFamily: FONT_NANUMMYNGJO, color: Colors.white, height: 1.5, letterSpacing: -0.8, )
                         ),
                       ),
                   )
                 ],
               ),
-              const SizedBox(height: 35,),
+              const SizedBox(height: 20,),
               index == 4 ? const SizedBox.shrink() : const SizedBox(
                 height: 1,
                 width: 900,
@@ -269,7 +266,7 @@ class _ShareNoteWidgetState extends State<ShareNoteWidget>{
     widgets.add(Positioned(
         top: 383,
         left: 210,
-        child: Text(DateFormat("yyyy.MM.dd").format(shareDate), style: const TextStyle(fontSize: 44, fontFamily: FONT_NANUMMYNGJO, color: COLOR_BOOK4, letterSpacing: -1.5),)
+        child: Text(DateFormat("yyyy.MM.dd").format(shareDate), style: const TextStyle(fontSize: 45, fontFamily: FONT_NANUMMYNGJO, color: COLOR_BOOK4, letterSpacing: -1.5),)
     ));
 
     for(int i=0; i<shareData.length; i++) {
@@ -281,11 +278,11 @@ class _ShareNoteWidgetState extends State<ShareNoteWidget>{
   Widget getPage2Section(double index, String content) {
     String num = (index + 1).toInt().toString();
     return Positioned(
-        top: 485 + (index * 248),
+        top: 485 + (index * 262),
         left: 210,
         child: ConstrainedBox(
           constraints: const BoxConstraints(
-          maxWidth: 700,),
+          maxWidth: 650,),
           child: Column(
           children: [
             Align(
@@ -295,13 +292,13 @@ class _ShareNoteWidgetState extends State<ShareNoteWidget>{
             Align(
               alignment: Alignment.centerLeft,
               child: SizedBox(
-                height: 90,
+                height: 165,
                 child: RichText(
                   overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
+                  maxLines: 4,
                   text: TextSpan(
                       text: content,
-                      style: const TextStyle(fontSize: 30, fontFamily: FONT_NANUMMYNGJO, color: COLOR_BOOK4, height: 1.5, letterSpacing: -1)
+                      style: const TextStyle(fontSize: 25, fontFamily: FONT_NANUMMYNGJO, color: COLOR_BOOK4, height: 1.5, letterSpacing: -1)
                   ),
                 ),
               ),
@@ -344,7 +341,7 @@ class _ShareNoteWidgetState extends State<ShareNoteWidget>{
   Widget getPage3Section(double index, String content) {
     String num = (index + 1).toInt().toString();
     return Positioned(
-      top: 515 + (index * 226),
+      top: 500 + (index * 220),
       left: 195,
         child: ConstrainedBox(
           constraints: const BoxConstraints(
@@ -360,17 +357,18 @@ class _ShareNoteWidgetState extends State<ShareNoteWidget>{
                       child: Text("$num.", style: const TextStyle(fontSize: 50, fontFamily: FONT_NANUMMYNGJO, fontWeight: FontWeight.bold, color: Color(0xFF932E0C), letterSpacing: -1.5),)),
                   const SizedBox(width: 38,),
                   Container(
+                    padding: const EdgeInsets.only(top: 10),
                     height: 140,
                     alignment: Alignment.centerLeft,
                     constraints: const BoxConstraints(
-                      maxWidth: 640,
+                      maxWidth: 670,
                     ),
                     child: RichText(
                       overflow: TextOverflow.ellipsis,
-                      maxLines: 3,
+                      maxLines: 4,
                       text: TextSpan(
                           text: content,
-                          style: const TextStyle(fontSize: 40, fontFamily: FONT_NANUMMYNGJO, color: Color(0xFF932E0C), letterSpacing: -1)
+                          style: const TextStyle(fontSize: 29, fontFamily: FONT_NANUMMYNGJO, color: Color(0xFF932E0C), letterSpacing: -1)
                       ),
                     ),
                   )
@@ -400,11 +398,12 @@ class _ShareNoteWidgetState extends State<ShareNoteWidget>{
     ));
 
     widgets.add(
-      Positioned(
-          top: 165,
-          left: 344,
+      Container(
+        alignment: AlignmentDirectional.topCenter,
+        margin: const EdgeInsets.only(top: 165),
           child: Text(DateFormat("yyyy.MM.dd").format(shareDate),
-            style: const TextStyle(fontSize: 83, fontFamily: FONT_APPLESD_EXTRABOLD, color: COLOR_BOOK4, letterSpacing: -1.6),))
+                  style: const TextStyle(fontSize: 83, fontFamily: FONT_APPLESD_EXTRABOLD, color: COLOR_BOOK4, letterSpacing: -1.6),)
+      )
     );
 
     for(int i=0; i<shareData.length; i++) {
@@ -419,11 +418,11 @@ class _ShareNoteWidgetState extends State<ShareNoteWidget>{
     String num = (index + 1).toInt().toString();
     return Positioned(
         top: 336 + (index * 272),
-        left: 108,
+        left: 95,
         child: Container(
           width: 863,
           height: 232,
-          padding: const EdgeInsets.only(left: 57, right: 40, top: 45, bottom: 20),
+          padding: const EdgeInsets.only(left: 57, right: 40, top: 38, bottom: 38),
           decoration: BoxDecoration(
             color: colors[index.toInt()],
             borderRadius: const BorderRadius.all(Radius.circular(99)),
@@ -440,17 +439,17 @@ class _ShareNoteWidgetState extends State<ShareNoteWidget>{
                     child: Text("0$num", style: const TextStyle(fontSize: 90, fontFamily: FONT_APPLESD_HEAVY, color: Color(0xFFF0E6DD)),)),
                 const SizedBox(width: 30,),
                 Container(
-                  height: 140,
+                  height: 160,
                   alignment: Alignment.centerLeft,
                   constraints: const BoxConstraints(
                     maxWidth: 580,
                   ),
                   child: RichText(
                     overflow: TextOverflow.ellipsis,
-                    maxLines: 3,
+                    maxLines: 4,
                     text: TextSpan(
                         text: content,
-                        style: const TextStyle(fontSize: 36, fontFamily: FONT_APPLESD, color: Color(0xFFF0E6DD ), letterSpacing: -1)
+                        style: const TextStyle(fontSize: 29, fontFamily: FONT_APPLESD, color: Color(0xFFF0E6DD), letterSpacing: -1)
                     ),
                   ),
                 )
