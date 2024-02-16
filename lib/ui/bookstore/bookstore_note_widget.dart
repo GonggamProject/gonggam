@@ -289,11 +289,13 @@ Widget getBeforeWriteOtherNoteWithButton(String nickname) {
 Widget getNote(BuildContext context, List<Note> noteData, String writerName, String customerId, int currentDateState, int groupId) {
   return Container(
     padding: const EdgeInsets.fromLTRB(30, 30, 30, 30),
-    child: Column(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: getNoteWidgets(context, noteData, writerName, customerId, currentDateState, groupId),
+    child: SingleChildScrollView(
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: getNoteWidgets(context, noteData, writerName, customerId, currentDateState, groupId),
+      ),
     ),
   );
 }
