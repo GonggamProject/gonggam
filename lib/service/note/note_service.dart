@@ -1,7 +1,10 @@
 import 'dart:collection';
+import 'dart:ffi';
 
 import 'package:gonggam/common/http/http_client.dart';
+import 'package:gonggam/domain/note/calendar.dart';
 
+import '../../common/prefs.dart';
 import '../../domain/common/response.dart';
 import '../../domain/note/note.dart';
 import '../../domain/note/notes.dart';
@@ -30,5 +33,19 @@ class NoteService {
 
   static Future<void> deleteNote(String targetedAt, int groupId) async {
     await GongGamHttpClient().deleteRequest("/v1/notes", {"targetedAt": targetedAt, "groupId": groupId});
+  }
+
+  static Future<Calendar> getCalendar(int groupId, String? targetCustomerId, String yyyyMM) async {
+    String queryParams = "?";
+
+    queryParams += "groupId=$groupId";
+    if(targetCustomerId != Prefs.getCustomerId()) {
+      queryParams += "&targetCustomerId=$targetCustomerId";
+    }
+    queryParams += "&yyyyMM=$yyyyMM";
+
+    final response = await GongGamHttpClient().getRequest("/v1/calender$queryParams", null);
+    Response<Calendar> res = Response.fromJson(response.data, (json) => Calendar.fromJson(json as Map<String, dynamic>));
+    return res.content!;
   }
 }

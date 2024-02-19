@@ -13,6 +13,33 @@ class Utils {
     return DateFormat(format).format(now);
   }
 
+  static String targetDateToFormatDate(DateTime datetime, String format) {
+    return DateFormat(format).format(datetime);
+  }
+
+  static DateTime getPreviousMonth(DateTime date) {
+    int year = date.month == 1 ? date.year - 1 : date.year;
+    int month = date.month == 1 ? 12 : date.month - 1;
+    int lastDayOfMonth = DateTime(year, month + 1, 0).day;
+    return DateTime(year, month, lastDayOfMonth, date.hour, date.minute, date.second, date.millisecond, date.microsecond);
+  }
+
+  static DateTime getNextMonth(DateTime date) {
+    int year = date.month == 12 ? date.year + 1 : date.year;
+    int month = date.month == 12 ? 1 : date.month + 1;
+    return DateTime(year, month, 1, date.hour, date.minute, date.second, date.millisecond, date.microsecond);
+  }
+
+  static int compartDateTimeByMonth(DateTime targetA, DateTime targetB) {
+    if (targetA.year == targetB.year && targetA.month == targetB.month) {
+      return 0;
+    } else if(targetA.year >= targetB.year && targetA.month > targetB.month ) {
+      return 1;
+    } else {
+      return -1;
+    }
+  }
+
   static bool isAfterCreateAt(String createAt, int daysToAdd) {
     DateTime targetDatetime = DateTime.now().add(Duration(days: daysToAdd));
     DateTime targetDate = DateTime(targetDatetime.year, targetDatetime.month, targetDatetime.day);

@@ -383,7 +383,7 @@ class NoteData extends LinkedListEntry<NoteData> {
   }
 
   String getNoteText() => controller.text;
-  int getNoteTextLength() {return controller.text.length;}
+  int getNoteTextLength() {return controller.text.characters.length;}
   late int? noteId = null;
   late double textFieldHight = 99.0;
 }

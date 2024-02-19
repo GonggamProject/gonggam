@@ -345,7 +345,7 @@ class _ShareNoteWidgetState extends State<ShareNoteWidget>{
       left: 195,
         child: ConstrainedBox(
           constraints: const BoxConstraints(
-            maxWidth: 770,
+            maxWidth: 775,
           ),
           child: Column(
             children: [
@@ -358,14 +358,14 @@ class _ShareNoteWidgetState extends State<ShareNoteWidget>{
                   const SizedBox(width: 38,),
                   Container(
                     padding: const EdgeInsets.only(top: 10),
-                    height: 140,
+                    height: 195,
                     alignment: Alignment.centerLeft,
                     constraints: const BoxConstraints(
-                      maxWidth: 670,
+                      maxWidth: 675,
                     ),
                     child: RichText(
                       overflow: TextOverflow.ellipsis,
-                      maxLines: 4,
+                      maxLines: 5,
                       text: TextSpan(
                           text: content,
                           style: const TextStyle(fontSize: 29, fontFamily: FONT_NANUMMYNGJO, color: Color(0xFF932E0C), letterSpacing: -1)
@@ -429,7 +429,7 @@ class _ShareNoteWidgetState extends State<ShareNoteWidget>{
           ),
           child: ConstrainedBox(
             constraints: const BoxConstraints(
-              maxWidth: 780,
+              maxWidth: 790,
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -439,17 +439,17 @@ class _ShareNoteWidgetState extends State<ShareNoteWidget>{
                     child: Text("0$num", style: const TextStyle(fontSize: 90, fontFamily: FONT_APPLESD_HEAVY, color: Color(0xFFF0E6DD)),)),
                 const SizedBox(width: 30,),
                 Container(
-                  height: 160,
+                  height: 200,
                   alignment: Alignment.centerLeft,
                   constraints: const BoxConstraints(
-                    maxWidth: 580,
+                    maxWidth: 590,
                   ),
                   child: RichText(
                     overflow: TextOverflow.ellipsis,
                     maxLines: 4,
                     text: TextSpan(
                         text: content,
-                        style: const TextStyle(fontSize: 29, fontFamily: FONT_APPLESD, color: Color(0xFFF0E6DD), letterSpacing: -1)
+                        style: const TextStyle(fontSize: 24, fontFamily: FONT_APPLESD, color: Color(0xFFF0E6DD), letterSpacing: -1)
                     ),
                   ),
                 )
