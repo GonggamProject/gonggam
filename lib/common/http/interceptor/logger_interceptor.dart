@@ -7,17 +7,17 @@ class CustomLogInterceptor extends Interceptor {
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    print('REQUEST[${options.method}] => PATH: ${options.path}');
+    // print('REQUEST[${options.method}] => PATH: ${options.path}');
     if (options.data != null) {
-      print('REQUEST DATA => ${options.data}');
+      // print('REQUEST DATA => ${options.data}');
     }
     super.onRequest(options, handler);
   }
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    print('RESPONSE[${response.statusCode}] => PATH: ${response.requestOptions.path}');
-    print('RESPONSE DATA => $response');
+    // print('RESPONSE[${response.statusCode}] => PATH: ${response.requestOptions.path}');
+    // print('RESPONSE DATA => $response');
 
     Map<String,dynamic> jsonData = response.data;
     if(jsonData['code'] != "GG200" && !skipErrCode.contains(jsonData['code'])) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gonggam/service/note/note_service.dart';
+import 'package:screenshot/screenshot.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../common/prefs.dart';
 import '../../controller/group_controller.dart';
@@ -77,6 +78,7 @@ class _BookStoreMainWidgetState extends State<BookStoreMainWidget> {
                     currentGroupName = group.name;
                     customerId = Prefs.getCustomerId();
                     _future = getBottomNoteList(selectedGroupId, customerId, _changeCustomerId);
+                    _currentCalendarDate = DateTime.now();
                     setState(() {});
                   });
                 },
@@ -222,7 +224,7 @@ class _BookStoreMainWidgetState extends State<BookStoreMainWidget> {
               backgroundColor: COLOR_LIGHTGRAY,
               shadowColor: Colors.transparent,
             ),
-            child: Text(isCalendarMode ? "책방보기" : "캘린더보기", style: TextStyle(fontFamily: FONT_APPLESD, fontSize: 15, color: COLOR_SUB))
+            child: Text(isCalendarMode ? "책방보기" : "캘린더보기", style: const TextStyle(fontFamily: FONT_APPLESD, fontSize: 15, color: COLOR_SUB))
         )
       ],
     );
@@ -289,6 +291,8 @@ class _BookStoreMainWidgetState extends State<BookStoreMainWidget> {
         future: NoteService.getCalendar(selectedGroupId, customerId, targetDate),
         builder: (context, snapshot) {
           if(snapshot.hasData) {
+            final double ratio = MediaQuery.of(context).devicePixelRatio;
+
             return Expanded(
               flex: 7,
               child: TableCalendar(
@@ -300,14 +304,13 @@ class _BookStoreMainWidgetState extends State<BookStoreMainWidget> {
                 lastDay: getLastDay(),
                 headerVisible: false,
                 shouldFillViewport: true,
-                rowHeight: 60,
                 daysOfWeekHeight: 35,
                 calendarBuilders: CalendarBuilders(
                     defaultBuilder: (context, dateTime, _) {
-                      return snapshot.data!.writtenDates.contains(Utils.targetDateToFormatDate(dateTime, "yyyyMMdd")) ? writedDay(dateTime) : defaultDay(dateTime);
+                      return snapshot.data!.writtenDates.contains(Utils.targetDateToFormatDate(dateTime, "yyyyMMdd")) ? writedDay(dateTime, ratio) : defaultDay(dateTime, ratio);
                     },
                     todayBuilder: (context, dateTime, _) {
-                      return snapshot.data!.writtenDates.contains(Utils.targetDateToFormatDate(dateTime, "yyyyMMdd")) ? writedDay(dateTime) : defaultDay(dateTime);
+                      return snapshot.data!.writtenDates.contains(Utils.targetDateToFormatDate(dateTime, "yyyyMMdd")) ? writedDay(dateTime, ratio) : defaultDay(dateTime, ratio);
                     },
                     outsideBuilder: (context, dateTime, _) {
                       return const SizedBox.shrink();
@@ -338,12 +341,12 @@ class _BookStoreMainWidgetState extends State<BookStoreMainWidget> {
         });
   }
 
-  Widget defaultDay(DateTime dateTime) {
+  Widget defaultDay(DateTime dateTime, double ratio) {
     bool isToday = DateTime(now.year, now.month, now.day).compareTo(DateTime(dateTime.year, dateTime.month, dateTime.day)) == 0;
     bool isWeekend = dateTime.weekday == 6 || dateTime.weekday == 7;
     return Container(
         margin: const EdgeInsets.all(5),
-        padding: const EdgeInsets.fromLTRB(7, 8, 7, 6.5),
+        padding: EdgeInsets.fromLTRB(7, 4.5 * ratio, 7, 4.5 * ratio),
         alignment: Alignment.topCenter,
       child: Container(
         width: 20,
@@ -366,12 +369,12 @@ class _BookStoreMainWidgetState extends State<BookStoreMainWidget> {
     );
   }
 
-  Widget writedDay(DateTime dateTime) {
+  Widget writedDay(DateTime dateTime, double ratio) {
     bool isToday = DateTime(now.year, now.month, now.day).compareTo(DateTime(dateTime.year, dateTime.month, dateTime.day)) == 0;
     bool isWeekend = dateTime.weekday == 6 || dateTime.weekday == 7;
     return Container(
       margin: const EdgeInsets.all(5),
-      padding: const EdgeInsets.fromLTRB(7, 8, 7, 6.5),
+      padding: EdgeInsets.fromLTRB(7, 4.5 * ratio, 7, 4.5 * ratio),
       decoration: const BoxDecoration(
         color: COLOR_LIGHTGRAY,
         borderRadius: BorderRadius.all(Radius.circular(99)),
@@ -396,10 +399,16 @@ class _BookStoreMainWidgetState extends State<BookStoreMainWidget> {
                 : TextStyle(fontWeight: isToday ? FontWeight.bold : FontWeight.normal),
             ),
           ),
-          Image.asset(
-            "$IMAGE_PATH/calendar_logo.png",
-            fit: BoxFit.fill,
-          )
+          Expanded(child:
+            Align(
+              alignment: AlignmentDirectional.bottomCenter,
+              child: Image.asset(
+                "$IMAGE_PATH/calendar_logo.png",
+                height: 21,
+                fit: BoxFit.fitWidth,
+              ),
+            )
+          ),
         ],
       ),
     );
@@ -408,7 +417,6 @@ class _BookStoreMainWidgetState extends State<BookStoreMainWidget> {
   DateTime getFirstDay() {
     DateTime createAt = DateTime.parse(groupController.group.createdAt);
     DateTime firstDayOfThisMonth = DateTime(createAt.year, createAt.month, 1);
-    print("first : "+ firstDayOfThisMonth.toString());
     return firstDayOfThisMonth;
   }
 
@@ -416,7 +424,6 @@ class _BookStoreMainWidgetState extends State<BookStoreMainWidget> {
     DateTime now = DateTime.now();
     DateTime firstDayOfNextMonth = DateTime(now.year, now.month + 1, 1);
     DateTime lastDayOfThisMonth = firstDayOfNextMonth.subtract(const Duration(days: 1));
-    print("last : "+ lastDayOfThisMonth.toString());
     return lastDayOfThisMonth;
   }
 }

@@ -8,7 +8,6 @@ class AuthInterceptor extends Interceptor {
   Future<void> onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     if (!options.path.contains("/authenticate")) {
       String? accessToken = await storage.read(key: "token");
-      print(accessToken);
       options.headers['Authorization'] = 'Bearer $accessToken';
     }
     return super.onRequest(options, handler);
