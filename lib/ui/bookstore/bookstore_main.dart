@@ -169,10 +169,21 @@ class _BookStoreMainWidgetState extends State<BookStoreMainWidget> {
           child: const Icon(Icons.keyboard_arrow_left),
         ),
         const SizedBox(width: 5),
-        isCalendarMode ? Text(Utils.targetDateToFormatDate(_currentCalendarDate, "yyyy.MM"),
-            style: const TextStyle(fontFamily: FONT_APPLESD, fontSize: 18)) :
-        Text(Utils.formatDate("yyyy.MM.dd", _currentPageIndex - 365),
-            style: const TextStyle(fontFamily: FONT_APPLESD, fontSize: 18)),
+        InkWell(
+          onTap: () {
+            if(isCalendarMode) {
+              _currentCalendarDate = DateTime.now();
+            } else {
+              _currentPageIndex = 365;
+              _pageController.jumpToPage(365);
+            }
+            setState(() {});
+          },
+          child: isCalendarMode ? Text(Utils.targetDateToFormatDate(_currentCalendarDate, "yyyy.MM"),
+              style: const TextStyle(fontFamily: FONT_APPLESD, fontSize: 18)) :
+          Text(Utils.formatDate("yyyy.MM.dd", _currentPageIndex - 365),
+              style: const TextStyle(fontFamily: FONT_APPLESD, fontSize: 18)),
+        ),
         const SizedBox(width: 5),
         ElevatedButton(
           onPressed: () {
@@ -327,7 +338,7 @@ class _BookStoreMainWidgetState extends State<BookStoreMainWidget> {
                   if(snapshot.data!.writtenDates.contains(Utils.targetDateToFormatDate(selectedDay, "yyyyMMdd"))) {
                     isCalendarMode = false;
 
-                    _currentPageIndex = 365 - (DateTime.now().difference(selectedDay).inDays);
+                    _currentPageIndex = 365 - (DateTime.utc(now.year, now.month, now.day).difference(selectedDay).inDays);
                     setState(() {
                       _pageController = PageController(initialPage: _currentPageIndex);
                     });
