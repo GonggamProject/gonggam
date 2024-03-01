@@ -40,12 +40,15 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
   }
 
   void getNoteData() async {
+    _focusNodes.add(FocusNode());
+    noteDataList.add(NoteData());
+
     gonggam_response.Response<Notes> noteRes = await NoteService.getNoteList(null, groupId, Utils.formatDate("yyyyMMdd", currentDateState));
     List<Note> noteList = noteRes.content!.list;
-    if (noteList.isEmpty) {
-      _focusNodes.add(FocusNode());
-      noteDataList.add(NoteData());
-    } else {
+    if (noteList.isNotEmpty) {
+      _focusNodes.clear();
+      noteDataList.clear();
+      
       isEditMode = true;
       for (var note in noteList) {
         _focusNodes.add(FocusNode());
