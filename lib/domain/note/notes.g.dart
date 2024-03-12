@@ -12,10 +12,12 @@ Notes _$NotesFromJson(Map<String, dynamic> json) => Notes(
       (json['list'] as List<dynamic>)
           .map((e) => Note.fromJson(e as Map<String, dynamic>))
           .toList(),
+      json['isWriteAll'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$NotesToJson(Notes instance) => <String, dynamic>{
       'groupId': instance.groupId,
       'targetedAt': instance.targetedAt,
       'list': instance.list,
+      'isWriteAll': instance.isWriteAll,
     };

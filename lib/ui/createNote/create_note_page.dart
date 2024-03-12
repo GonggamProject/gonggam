@@ -26,7 +26,8 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
   final GroupController groupController = Get.find<GroupController>();
   final int currentDateState = Get.arguments ?? 0;
   late int groupId = groupController.group.id;
-  late bool isEditMode = false;
+  bool isEditMode = false;
+  bool isWriteAll = false;
   final ScrollController _scrollController = ScrollController();
   final List<String> hintOrderText = ["첫", "두", "세", "네", "다섯"];
 
@@ -48,7 +49,7 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
     if (noteList.isNotEmpty) {
       _focusNodes.clear();
       noteDataList.clear();
-      
+
       isEditMode = true;
       for (var note in noteList) {
         _focusNodes.add(FocusNode());
@@ -171,7 +172,7 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
           child: ElevatedButton(
             onPressed: () {
               if (isAllNoteWrited()) {
-                NoteService.postNoteList(groupController.group.id, Utils.formatDate("yyyyMMdd", currentDateState), noteDataList, isEditMode).then((value) {
+                NoteService.postNoteList(groupController.group.id, Utils.formatDate("yyyyMMdd", currentDateState), noteDataList, isEditMode, isWriteAll).then((value) {
                   showAd();
                   Get.off(const BookStoreMainWidget(), arguments: {"isRefresh": true, "currentDateState": currentDateState});
                 });
@@ -237,6 +238,46 @@ class _CreateNoteWidgetState extends State<CreateNoteWidget> {
             ]))
       ],
     ));
+
+    if(groupController.groups.groups.length > 1 && !isEditMode) {
+      widgets.add(Row(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            height: 35,
+            width:20,
+            margin: const EdgeInsets.only(right: 8, top: 2),
+            child: Checkbox(
+              value: isWriteAll,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5)),
+              activeColor: Colors.white,
+              checkColor: Colors.black,
+              side: MaterialStateBorderSide.resolveWith(
+                    (Set<MaterialState> states) {
+                  if (states.contains(MaterialState.selected)) {
+                    return const BorderSide(
+                        width: 1, color: Colors.black);
+                  }
+                  return const BorderSide(width: 1,
+                      color: Colors.black);
+                },
+              ),
+              onChanged: (value) {
+                isWriteAll = value!;
+                setState(() {
+                });
+              },
+            ),
+          ),
+          const Text("모든 책방에 일기쓰기",
+            style: TextStyle(fontFamily: FONT_APPLESD,
+                fontSize: 12, color: COLOR_SUB, textBaseline: TextBaseline.ideographic),
+            textAlign: TextAlign.center,)
+        ],
+      ));
+    }
 
     if (noteDataList.length == MAX_NOTE_COUNT) {
       widgets.add(const SizedBox(height: 35));
