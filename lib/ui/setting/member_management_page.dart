@@ -114,11 +114,10 @@ class _MemberManagementPageWidgetState extends State<MemberManagementPageWidget>
               member.rule.isOwner() ? const SizedBox.shrink() :
               GestureDetector(
                 onTap: () {
-                  Alert.confirmDialog("${member.nickname}을 내보낼까요?", "내보내면 ${member.nickname}님의\n글은 삭제됩니다.", "내보내기", () => {
-                    GroupService.kickOutMember(group.id, member.customerId)
-                  });
-                  setState(() {
+                  Alert.confirmDialog("${member.nickname}을 내보낼까요?", "내보내면 ${member.nickname}님의\n글은 삭제됩니다.", "내보내기", () {
+                    GroupService.kickOutMember(group.id, member.customerId);
                     group.members.removeWhere((element) => element.customerId == member.customerId);
+                    setState(() {});
                   });
                 },
                 child: Container(
@@ -126,7 +125,7 @@ class _MemberManagementPageWidgetState extends State<MemberManagementPageWidget>
                   height: 25,
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.black),
-                    borderRadius: BorderRadius.all(Radius.circular(25)),
+                    borderRadius: const BorderRadius.all(Radius.circular(25)),
                   ),
                   child: const Align(
                     alignment: Alignment.center,
