@@ -160,6 +160,7 @@ class _BookStoreMainWidgetState extends State<BookStoreMainWidget> {
             ),
             backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
             shadowColor: MaterialStateProperty.all<Color>(Colors.transparent),
+            surfaceTintColor: MaterialStateProperty.all<Color>(Colors.transparent),
             overlayColor: MaterialStateProperty.resolveWith<Color>(
                   (Set<MaterialState> states) {
                 return Colors.transparent;
@@ -205,6 +206,7 @@ class _BookStoreMainWidgetState extends State<BookStoreMainWidget> {
             ),
             backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
             shadowColor: MaterialStateProperty.all<Color>(Colors.transparent),
+            surfaceTintColor: MaterialStateProperty.all<Color>(Colors.transparent),
             overlayColor: MaterialStateProperty.resolveWith<Color>(
                   (Set<MaterialState> states) {
                 return Colors.transparent;
@@ -234,6 +236,8 @@ class _BookStoreMainWidgetState extends State<BookStoreMainWidget> {
               ),
               backgroundColor: COLOR_LIGHTGRAY,
               shadowColor: Colors.transparent,
+              surfaceTintColor: Colors.transparent,
+              padding: const EdgeInsets.fromLTRB(10, 7, 10, 7)
             ),
             child: Text(isCalendarMode ? "책방보기" : "캘린더보기", style: const TextStyle(fontFamily: FONT_APPLESD, fontSize: 15, color: COLOR_SUB))
         )

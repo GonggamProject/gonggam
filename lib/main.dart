@@ -66,6 +66,28 @@ void main() async {
           primarySwatch: Colors.blue,
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,
+          canvasColor: Colors.transparent,
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              surfaceTintColor: Colors.transparent
+            )
+          ),
+          appBarTheme: const AppBarTheme(
+              color: Colors.transparent,
+              surfaceTintColor: Colors.transparent
+          ),
+          bottomAppBarTheme: const BottomAppBarTheme(
+              color: Colors.transparent,
+              surfaceTintColor: Colors.transparent
+          ),
+          dialogTheme: const DialogTheme(
+            surfaceTintColor: Colors.transparent
+          ),
+          dialogBackgroundColor: Colors.white,
+
+          popupMenuTheme: PopupMenuThemeData(
+            surfaceTintColor: Colors.transparent
+          )
         ),
         home: const SplashWidget(),
         // home: const ShareNoteWidget(),

@@ -75,7 +75,7 @@ class _WalkthroughtWidgetState extends State<WalkthroughtWidget>{
                       backgroundColor: COLOR_BOOK5,
                       shadowColor: Colors.transparent,
                   ),
-                  child: Text(_currentIndex == lastIndex ? "확인" : "다음", style: const TextStyle(fontFamily: FONT_APPLESD, fontSize: 18),),
+                  child: Text(_currentIndex == lastIndex ? "확인" : "다음", style: const TextStyle(fontFamily: FONT_APPLESD, fontSize: 18, color: Colors.white),),
                 ),
               ),
             ]

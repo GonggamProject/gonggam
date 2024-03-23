@@ -250,7 +250,7 @@ class _SettingPageWidgetState extends State<SettingPageWidget> {
         child: InkWell(
           onTap: () async {
             if (!await launchUrl(Uri.parse(url))) {
-              throw Exception('Could not open brwoser');
+              throw Exception('Could not open browser');
             }
           },
           child: Row(
@@ -273,10 +273,7 @@ class _SettingPageWidgetState extends State<SettingPageWidget> {
 
   Future<void> requestReview() async {
     final InAppReview inAppReview = InAppReview.instance;
-
-    if (await inAppReview.isAvailable()) {
-      inAppReview.requestReview();
-    }
+    inAppReview.openStoreListing(appStoreId: "6473127000");
   }
 }
 

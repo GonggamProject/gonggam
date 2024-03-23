@@ -137,6 +137,7 @@ class Alert {
                       Navigator.pop(context);
                     },
                       style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.zero,
                           side: const BorderSide(
                             color: COLOR_SUB,
                           ),
@@ -157,6 +158,7 @@ class Alert {
                       confirmAction();
                     },
                       style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.zero,
                           side: const BorderSide(
                             color: COLOR_SUB,
                           ),

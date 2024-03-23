@@ -14,6 +14,7 @@ import '../../common/constants.dart';
 
 Widget getBottomNavigationBar(BuildContext context, GroupController? groupController, int currentNavIndex) {
   return BottomAppBar(
+    padding: EdgeInsets.zero,
     child: Container(
       decoration: const BoxDecoration(
         border: Border(
