@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gonggam/service/note/note_service.dart';
-import 'package:screenshot/screenshot.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../common/prefs.dart';
 import '../../controller/group_controller.dart';

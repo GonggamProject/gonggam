@@ -220,7 +220,7 @@ class _CreateNicknameWidgetState extends State<CreateNicknameWidget> {
                   : const Color(0xFFCDCDCD)),
           child: const Text(
             "확인",
-            style: TextStyle(fontFamily: FONT_APPLESD, fontSize: 18),
+            style: TextStyle(fontFamily: FONT_APPLESD, fontSize: 18, color: Colors.white),
           ),
         ),
       )
